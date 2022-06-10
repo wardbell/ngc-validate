@@ -1,10 +1,15 @@
 import { Component } from '@angular/core';
+import { ROUTER } from '@imports';
+import { NavComponentComponent } from './nav-component/nav-component.component';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  standalone: true,
+  template: `
+    <app-nav-component></app-nav-component>
+  `,
+  imports: [ROUTER, NavComponentComponent ],
 })
 export class AppComponent {
-  title = 'ngc-validate';
+  title = 'Angular Validation Done Right!';
 }

@@ -2,6 +2,21 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "paths": {
+      "@app/*": ["src/app/*"],
+      "@core": ["src/app/core/index"],
+      "@core/*": ["src/app/core/*"],
+      "@environment": ["src/environments/environment"],
+      "@imports": ["src/app/core/imports.ts"],
+      "@model": ["src/app/model/index"],
+      "@model/*": ["src/app/model/*"],
+      "@shared": ["src/app/shared/index"],
+      "@shared/*": ["src/app/shared/*"],
+      "@utils": ["src/app/core/utils/index"],
+      "@utils/*": ["src/app/core/utils/*"],
+      "@validation": ["src/app/validation/index"],
+      "@validation/*": ["src/app/validation/*"],
+    },
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
@@ -25,6 +40,7 @@
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
+    "preserveWhitespaces": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true

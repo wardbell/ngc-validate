@@ -1,4 +1,10 @@
-# NgcValidate
+# Ngc Validate
+
+Demonstrates Model-Driven validation, in contrast to the UI-driven validation that we are taught in the Angular docs.
+
+The initial audience is a talk I'm giving at NgConf 2022 on Model-Driven Validation.
+
+Coincidentally, it also demonstrates Standalone components and other new features of Angular v14.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.0.
 

@@ -20,10 +20,10 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'ngc-validate'`, () => {
+  it(`should have as title 'NGC Validate'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('ngc-validate');
+    expect(app.title).toEqual('NGC Validate');
   });
 
   it('should render title', () => {
