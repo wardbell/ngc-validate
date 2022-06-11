@@ -7,15 +7,15 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 
-import { Address2FormComponent } from './address2-form.component';
+import { AddressNgModuleFormComponent } from './address-ngmodule-form.component';
 
-describe('Address2FormComponent', () => {
-  let component: Address2FormComponent;
-  let fixture: ComponentFixture<Address2FormComponent>;
+describe('AddressNgModuleFormComponent', () => {
+  let component: AddressNgModuleFormComponent;
+  let fixture: ComponentFixture<AddressNgModuleFormComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ Address2FormComponent ],
+      declarations: [ AddressNgModuleFormComponent ],
       imports: [
         NoopAnimationsModule,
         ReactiveFormsModule,
@@ -29,7 +29,7 @@ describe('Address2FormComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(Address2FormComponent);
+    fixture = TestBed.createComponent(AddressNgModuleFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

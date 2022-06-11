@@ -1,30 +1,30 @@
 <form [formGroup]="addressForm" (ngSubmit)="onSubmit()">
   <mat-card class="address-card">
     <mat-card-header class="my-header">
-      <mat-card-title>Work Address</mat-card-title>
+      <mat-card-title>Test Address</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Street" formControlName="street">
-            <mat-error *ngIf="addressForm.controls.street.errors">
-              {{ addressForm.controls.street.errors['error'] }}
+            <input matInput placeholder="Address" formControlName="address">
+            <mat-error *ngIf="addressForm.controls['address'].hasError('required')">
+              Address is <strong>required</strong>
             </mat-error>
           </mat-form-field>
         </div>
       </div>
-      <div class="row" *ngIf="!hasStreet2">
+      <div class="row" *ngIf="!hasAddress2">
         <div class="col">
-          <button mat-button type="button" (click)="hasStreet2 = !hasStreet2">
+          <button mat-button type="button" (click)="hasAddress2 = !hasAddress2">
             + Add C/O, Apt, Suite, Unit
           </button>
         </div>
       </div>
-      <div class="row" *ngIf="hasStreet2">
+      <div class="row" *ngIf="hasAddress2">
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput placeholder="Street 2" formControlName="street2">
+            <input matInput placeholder="Address 2" formControlName="address2">
           </mat-form-field>
         </div>
       </div>
@@ -32,8 +32,8 @@
         <div class="col">
           <mat-form-field class="full-width">
             <input matInput placeholder="City" formControlName="city">
-            <mat-error *ngIf="addressForm.controls.city.errors">
-              {{ addressForm.controls.city.errors['error'] }}
+            <mat-error *ngIf="addressForm.controls['city'].hasError('required')">
+              City is <strong>required</strong>
             </mat-error>
           </mat-form-field>
         </div>
@@ -44,8 +44,8 @@
                 {{ state.name }}
               </mat-option>
             </mat-select>
-            <mat-error *ngIf="addressForm.controls.state.errors">
-              {{ addressForm.controls.state.errors['error'] }}
+            <mat-error *ngIf="addressForm.controls['state'].hasError('required')">
+              State is <strong>required</strong>
             </mat-error>
           </mat-form-field>
         </div>
@@ -53,16 +53,20 @@
       <div class="row">
         <div class="col">
           <mat-form-field class="full-width">
-            <input matInput #postalCode placeholder="Postal Code" formControlName="postalCode">
-            <mat-error *ngIf="addressForm.controls.postalCode.errors">
-              {{ addressForm.controls.postalCode.errors['error'] }}
+            <input matInput #postalCode maxlength="5" placeholder="Postal Code" formControlName="postalCode">
+            <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
+            <mat-error *ngIf="addressForm.controls['postalCode'].hasError('required')">
+              Postal Code is <strong>required</strong>
+            </mat-error>
+            <mat-error *ngIf="addressForm.controls['postalCode'].hasError('minlength')">
+              Postal Code must be <strong>five</strong> digits
             </mat-error>
           </mat-form-field>
         </div>
       </div>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button color="primary" type="submit">Submit</button>
+      <button mat-raised-button color="primary" type="submit">Save</button>
     </mat-card-actions>
   </mat-card>
 </form>

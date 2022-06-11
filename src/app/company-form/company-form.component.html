@@ -1,0 +1,18 @@
+<form [model]="vm" modelType="company" #form="ngForm">
+  <mat-card class="company-card">
+
+    <mat-card-header class="my-header">
+      <mat-card-title>Company</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <app-company-general-sub-form [vm]="vm"></app-company-general-sub-form>
+      <app-address-sub-form [vm]="vm.workAddress" name="workAddress"></app-address-sub-form>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="button" (click)="onSave(form)">Save</button>
+    </mat-card-actions>
+
+  </mat-card>
+</form>

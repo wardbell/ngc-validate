@@ -8,7 +8,7 @@ import { appRoutes } from '@app/app.routes';
 import { environment } from '@environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { asyncValidators, validators } from '@model/validators/validators'
+import { asyncValidators, validators } from '@app/validators/validators'
 import { MODEL_ASYNC_VALIDATORS, MODEL_VALIDATORS } from '@app/validation/interfaces'
 
 if (environment.production) {

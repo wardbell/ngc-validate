@@ -9,7 +9,15 @@ export interface ModelValidators extends Indexable<ValidationSuite> {
 }
 
 /** Vest validation suite as constructed in this app. */
-export type ValidationSuite = Suite<(model: Indexable, vc?: ValidationContext, field?: string | undefined) => void>;
+export type ValidationSuite = Suite<ValidationSuiteFn>;
+
+/** Vest validation suite function. Pass to vest `create()` to make a vest suite. */
+export type ValidationSuiteFn = (
+  model: Indexable,
+  field?: string | undefined,
+  group?: string | undefined,
+  vc?: ValidationContext | undefined
+) => void;
 
 /** Extra context for use by validators.
  * For example, it could contain a cache of other entities to reference.

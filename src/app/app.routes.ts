@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from "./home/home.component";
+import { CompanyFormComponent } from "@app/company-form/company-form.component";
+import { AddressFormComponent } from '@app/test-address-forms/address-form-reactive-w-val/address-form.component';
 
 
 /** Main application routes */
@@ -7,15 +8,22 @@ export const appRoutes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'home'
+    redirectTo: 'company'
   },
   {
-      path: 'home',
-      component: HomeComponent
+    path: 'company',
+    component: CompanyFormComponent,
+    title: 'Company'
   },
   {
-      path: 'about',
-      loadComponent: () =>
-          import('./about/about.component').then(m => m.AboutComponent)
+    path: 'test-address',
+    component: AddressFormComponent,
+    title: 'Test Address'
+  },
+  {
+    path: 'about',
+    loadComponent: () =>
+      import('./about/about.component').then(m => m.AboutComponent),
+    title: 'About'
   },
 ];

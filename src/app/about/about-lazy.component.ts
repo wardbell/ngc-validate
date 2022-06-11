@@ -1,11 +1,11 @@
 import { Component } from "@angular/core";
 
-import { STANDARD } from "@imports";
+import { COMMON } from "@imports";
 
 @Component({
   selector: 'app-about-lazy',
   standalone: true,
-  imports: [STANDARD],
+  imports: [COMMON],
   template: `<h2 *ngIf="visible">{{ title }}</h2>`
 })
 export class AboutLazyComponent {
