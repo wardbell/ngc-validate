@@ -1,0 +1,58 @@
+<div *ngIf="vm" [ngModelGroup]="ngModelGroupName" [model]="vm" modelType="address">
+  <div class="row">
+    <div class="col">
+      <mat-form-field class="full-width">
+        <input matInput name="street" placeholder="Street" [(ngModel)]="vm.street" #street="ngModel">
+        <mat-error *ngIf="street.errors">
+          {{ street.errors['error'] }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row" *ngIf="!hasStreet2">
+    <div class="col">
+      <button mat-button type="button" (click)="hasStreet2 = !hasStreet2">
+        + Add C/O, Apt, Suite, Unit
+      </button>
+    </div>
+  </div>
+  <div class="row" *ngIf="hasStreet2">
+    <div class="col">
+      <mat-form-field class="full-width">
+        <input matInput name="street2" placeholder="Street 2" [(ngModel)]="vm.street2">
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <mat-form-field class="full-width">
+        <input matInput name="city" placeholder="City" [(ngModel)]="vm.city" #city="ngModel">
+        <mat-error *ngIf="city.errors">
+          {{ city.errors['error'] }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <mat-form-field class="full-width">
+        <mat-select name="state" placeholder="State" [(ngModel)]="vm.state" #state="ngModel">
+          <mat-option *ngFor="let state of states" [value]="state.abbreviation">
+            {{ state.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="state.errors">
+          {{ state.errors['error'] }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <mat-form-field class="full-width">
+        <input matInput name="postalCode" placeholder="Postal Code" [(ngModel)]="vm.postalCode" #postalCode="ngModel">
+        <mat-error *ngIf="postalCode.errors">
+          {{ postalCode.errors['error'] }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div>
+</div>

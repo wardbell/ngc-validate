@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { CompanyFormComponent } from "@app/company-form/company-form.component";
+import { CompanyFormComponent as CompanyFormReactiveComponent } from "@app/company-form-reactive/company-form.component";
 import { AddressFormComponent } from '@app/test-address-forms/address-form-reactive-w-val/address-form.component';
 
 
@@ -14,6 +15,11 @@ export const appRoutes: Routes = [
     path: 'company',
     component: CompanyFormComponent,
     title: 'Company'
+  },
+  {
+    path: 'company-reactive',
+    component: CompanyFormReactiveComponent,
+    title: 'Company (Reactive)'
   },
   {
     path: 'test-address',

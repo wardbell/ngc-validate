@@ -15,7 +15,8 @@ enforce.extend({ isEmail, isPostalCode });
 /** Create and add Angular sync Validators to all the given form controls
  * @param controlGroup an object whose properties are the field names and values are FormControls.
  * ex: an Angular `FormGroup`. Note can only be one level deep and not include FormArrays.
- * @param suite the vest suite with validation rules
+ * @param suite the vest suite with synchronous validation rules
+ * @param [asyncSuite] the vest suite with asynchronous validation rules
  * @param [model] the model data to validate. If missing, create one with the field and control.value
  * @param [group] the name of a group of tests; only process tests in this group.
  * @param [context] global contextual data passed to vest validation rules.
@@ -23,6 +24,7 @@ enforce.extend({ isEmail, isPostalCode });
  export function addValidatorsToControls(
   controlGroup: Indexable<FormControl>,
   suite: ValidationSuite,
+  asyncSuite?: ValidationSuite,
   model?: Indexable,
   group?: string,
   context?: ValidationContext,
@@ -31,6 +33,12 @@ enforce.extend({ isEmail, isPostalCode });
     const validator = vestSyncFieldValidator(suite, field, model, group, context);
     control.clearValidators(); // start over
     control.addValidators(validator);
+
+    if (asyncSuite) {
+      const validator = vestAsyncFieldValidator(asyncSuite, field, model, group, context);
+      control.clearAsyncValidators(); // start over
+      control.addAsyncValidators(validator);
+    }
   })
 }
 
@@ -56,7 +64,10 @@ export function makeValidatorsForModel(
   }, {} as Indexable);
 }
 
-/** Create synchronous validator of a single field of the model in the validation context
+/** Create Angular synchronous validator function for a single field of the model in the validation context.
+ * When validation fails, the function returns a validation errors with two properties:
+ * `error` - the first vest validation error,
+ * `errors` - all of the vest validation errors for that field.
  * @param suite the vest suite with validation rules
  * @param field to validate
  * @param [model] the model data to validate. If missing, create one with the field and control.value
@@ -73,8 +84,7 @@ export function vestSyncFieldValidator(
   const validator = (control: AbstractControl): ValidationErrors | null => {
     const result = suite({ ...model, [field]: control.value }, field, group, context).getErrors();
     const errors = result[field];
-    // Only report the first error.
-    return errors ? { error: errors[0] } : null;
+    return errors ? { error: errors[0], errors } : null;
   };
 
   // HACK to find out if the field is required.
@@ -85,7 +95,10 @@ export function vestSyncFieldValidator(
   return isRequired ? [validator, Validators.required] : validator;
 }
 
-/** Create asynchronous validator of a single field of the model in the validation context
+/** Create Angular asynchronous validator function for a single field of the model in the validation context
+ * When validation fails, the function returns a validation errors with two properties:
+ * `error` - the first vest validation error,
+ * `errors` - all of the vest validation errors for that field.
  * @param suite the vest suite with async validation rules
  * @param field to validate
  * @param [model] the model data to validate. If missing, create one with the field and control.value
@@ -103,8 +116,7 @@ export function vestAsyncFieldValidator(
     const promise = new Promise<ValidationErrors | null>((resolve) => {
       suite({ ...model, [field]: control.value }, field, group, context).done(field, result => {
         const errors = result.getErrors();
-        // Only report the first error.
-        resolve(errors ? { error: errors[0] } : null);
+        resolve(errors ? { error: errors[0], errors } : null);
       });
     })
     return promise;

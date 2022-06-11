@@ -1,25 +1,50 @@
 import { Directive, Inject, Input, OnInit, Optional } from '@angular/core';
 import { NgModel } from '@angular/forms';
 
-import { FormValidationDirective } from './form-validation.directive'
+import { FormValidationModelDirective } from './form-validation-model.directive'
 import { Indexable } from '@core';
 import { ModelValidators, MODEL_ASYNC_VALIDATORS, MODEL_VALIDATORS } from './interfaces';
 import { ValidationContext, VALIDATION_CONTEXT } from './validation-context';
 import { vestAsyncFieldValidator, vestSyncFieldValidator } from './validation-fns';
 
+/** Sets validators for Template-Driven controls using NgModel */
 @Directive({
   selector: '[ngModel]',
-  standalone: true,
 })
 export class FormFieldNgModelDirective implements OnInit {
+
+  /** Context that validators may reference for external information.
+   * If not specified, try to pick up from parent FormValidationModelDirective.
+   * Blended with global ValidationContext (if it exists).
+   * Optional.
+   */
   @Input() context: ValidationContext | undefined;
+
+  /** Field (property) of the model to validate.
+   * If not specified, will use the NgModel name.
+   */
   @Input() field: string | undefined;
+
+  /** Group of tests within the validation suite. Only process tests in that group.
+   * If not specified, try to pick up from parent FormValidationModelDirective.
+   * Optional.
+   */
   @Input() group: string | undefined;
+
+  /** Data model whose properties will be validated.
+   * If not specified, try to pick up from parent FormValidationModelDirective.
+   * Required for validation.
+   */
   @Input() model: Indexable | undefined;
+
+  /** Name of the type of model to be validated. Identifies the suite of validators to apply.
+   * If not specified, try to pick up from parent FormValidationModelDirective.
+   * Required for validation.
+   */
   @Input() modelType: string | undefined;
 
   constructor(
-    @Optional() private formValidation: FormValidationDirective,
+    @Optional() private formValidation: FormValidationModelDirective,
     @Optional() @Inject(VALIDATION_CONTEXT) private globalContext: ValidationContext,
     @Optional() @Inject(MODEL_ASYNC_VALIDATORS) private modelAsyncValidators: ModelValidators,
     @Optional() @Inject(MODEL_VALIDATORS) private modelValidators: ModelValidators,

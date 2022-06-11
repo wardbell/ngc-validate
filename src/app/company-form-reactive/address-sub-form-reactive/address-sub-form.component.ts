@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, NgForm } from '@angular/forms';
 
-import { REACTIVE_FORMS } from '@imports';
 import { Address } from '@model';
 import { addValidatorsToControls } from '@app/validation';
 import { addressValidatorSuite } from '@app/validators';
+import { REACTIVE_FORMS } from '@imports';
 import { UsStates } from '@model';
 
 interface Vm {
@@ -26,9 +26,9 @@ export class AddressSubFormComponent implements OnInit {
   /** Name for the formGroup when added to the parent form. Defaults to 'address'. */
   @Input('name') formGroupName = 'address';
 
-  @Input() vm: Address | undefined;
+  @Input() address: Address | undefined;
 
-  addressForm = this.fb.group({
+  protected addressForm = this.fb.group({
     street: '',
     street2: '',
     city: '',
@@ -50,11 +50,9 @@ export class AddressSubFormComponent implements OnInit {
     // Wait a tick to bypass ExpressionChangedAfterItHasBeenCheckedError for `ng-valid`
     setTimeout(() => {
       this.parent.form.addControl(this.formGroupName, this.addressForm);
-      if (this.vm) {
+      if (this.address) {
         // Populate controls
-        this.addressForm.setValue(this.vm);
-        // Extract values when anything changes and update the view model
-        this.addressForm.valueChanges.subscribe(v => Object.assign(this.vm!, v));
+        this.addressForm.setValue(this.address);
       }
     }, 1);
   }

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { AddressSubFormComponent } from './address-sub-form/address-sub-form.component';
+import { AddressSubFormComponent } from './address-sub-form-reactive/address-sub-form.component';
 import { CompanyGeneralFormComponent } from './company-general-sub-form.component';
 
 import { Address, Company } from '@model';
@@ -17,7 +17,17 @@ import { FORMS } from '@imports';
 })
 export class CompanyFormComponent {
 
-  vm: Partial<Company> = { workAddress: {} as Address};
+  company: Company = {
+    id: '',
+    legalName: '',
+    workAddress: {
+      street: '',
+      street2: '',
+      city: '',
+      state: '',
+      postalCode: ''
+    } as Address
+  };
 
   onSave(ngForm: NgForm): void {
     // Reveal validation state at this form level and all the way down.

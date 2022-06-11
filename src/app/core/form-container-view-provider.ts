@@ -11,7 +11,7 @@ import { ControlContainer, NgForm, NgModelGroup } from '@angular/forms';
  * ```
  *   @Component({
  *     ...
- *    viewProviders[ formViewProvider ]
+ *    viewProviders[ formContainerViewProvider ]
  *   })
  * ```
  * @see Kara's AngularConnect 2017 talk: https://youtu.be/CD_t3m2WMM8?t=1826
@@ -31,16 +31,16 @@ import { ControlContainer, NgForm, NgModelGroup } from '@angular/forms';
  *  ngModelGroup cannot be used with a parent formGroup directive.
  *```
  */
-export const formViewProvider: Provider = {
+export const formContainerViewProvider: Provider = {
   provide: ControlContainer,
-  useFactory: formViewProviderFactory,
+  useFactory: formContainerViewProviderFactory,
   deps: [
     [new Optional(), NgForm],
     [new Optional(), NgModelGroup]
   ]
 };
 
-export function formViewProviderFactory(
+export function formContainerViewProviderFactory(
   ngForm: NgForm, ngModelGroup: NgModelGroup
 ) {
   return ngModelGroup || ngForm || null;

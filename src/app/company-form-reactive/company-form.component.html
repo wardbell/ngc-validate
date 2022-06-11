@@ -1,4 +1,4 @@
-<form #form="ngForm" [model]="vm" modelType="company">
+<form [model]="company" modelType="company" #form="ngForm">
   <mat-card class="company-card">
 
     <mat-card-header class="my-header">
@@ -6,8 +6,8 @@
     </mat-card-header>
 
     <mat-card-content>
-      <app-company-general-sub-form [vm]="vm"></app-company-general-sub-form>
-      <app-address-sub-form [vm]="vm.workAddress" name="workAddress"></app-address-sub-form>
+      <app-company-general-sub-form [company]="company"></app-company-general-sub-form>
+      <app-address-sub-form [address]="company.workAddress" name="workAddress"></app-address-sub-form>
     </mat-card-content>
 
     <mat-card-actions>

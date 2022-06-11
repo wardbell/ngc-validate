@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 
-import { FormValidationDirective, FormFieldNgModelDirective } from '@app/validation';
+import { ValidationModule } from '@app/validation';
 
 /** Imports for components referencing just the Common Module */
 export const COMMON = [CommonModule];
@@ -16,9 +16,9 @@ export const COMMON = [CommonModule];
 /** Standard imports for (almost) every Template-Driven forms component in this app. */
 export const FORMS = [
   CommonModule,
-  FormValidationDirective, FormFieldNgModelDirective,
   MatButtonModule, MatCardModule, MatInputModule, MatRadioModule, MatSelectModule,
-  FormsModule
+  FormsModule,
+  ValidationModule
 ];
 /** Standard imports for (almost) every Reactive Forms component in this app. */
 export const REACTIVE_FORMS = [
