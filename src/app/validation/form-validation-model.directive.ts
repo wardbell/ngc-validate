@@ -18,10 +18,10 @@ export class FormValidationModelDirective implements OnChanges {
   @Input() modelType: string | undefined;
 
   /** Group of tests within the validation suite. Only process tests in that group. */
-  @Input() group: string | undefined;
+  @Input() group?: string;
 
   /** Context that validators may reference for external information. */
-  @Input() context: ValidationContext | undefined;
+  @Input() context?: ValidationContext;
 
   private modelChange = new Subject<any>();
 

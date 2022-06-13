@@ -15,7 +15,11 @@ export const addressValidators: ValidationSuiteFn = (model: Partial<Address>) =>
   });
 
   test('street', 'Street must be at least 3 characters long', () => {
-    enforce(model.street).longerThan(2);
+    enforce(model.street).longerThanOrEquals(3);
+  });
+
+  test('street', 'Street may be at most 50 characters long', () => {
+    enforce(model.street).shorterThanOrEquals(50);
   });
 
   test('city', 'City is required', () => {
@@ -26,9 +30,9 @@ export const addressValidators: ValidationSuiteFn = (model: Partial<Address>) =>
     enforce(model.state).isNotBlank();
   });
 
-  test('state', 'State must be one of the US states', () => {
+  test('state', 'State must be one of the supported US states', () => {
     enforce(model.state).condition((state: string) =>
-      UsStates.some(s => s.abbreviation === state));
+      UsStates.some(s => s.abbreviation === state && !s.disabled));
   });
 
   test('postalCode', 'Postal Code is required', () => {

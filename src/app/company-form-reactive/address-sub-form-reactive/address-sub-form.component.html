@@ -1,58 +1,43 @@
 <div [formGroup]="addressForm">
   <div class="row">
-    <div class="col">
-      <mat-form-field class="full-width">
-        <input matInput placeholder="Street" formControlName="street">
-        <mat-error *ngIf="addressForm.controls.street.errors">
-          {{ addressForm.controls.street.errors['error'] }}
-        </mat-error>
-      </mat-form-field>
-    </div>
+    <mat-form-field class="col full-width">
+      <input matInput placeholder="Street" formControlName="street">
+      <mat-error *ngIf="addressForm.controls.street.errors" class="full-width">
+        {{ addressForm.controls.street.errors['error'] }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col full-width">
+      <input matInput placeholder="Street 2 (unit/apt)" formControlName="street2">
+    </mat-form-field>
   </div>
-  <div class="row" *ngIf="!hasStreet2">
-    <div class="col">
-      <button mat-button type="button" (click)="hasStreet2 = !hasStreet2">
-        + Add C/O, Apt, Suite, Unit
-      </button>
-    </div>
-  </div>
-  <div class="row" *ngIf="hasStreet2">
-    <div class="col">
-      <mat-form-field class="full-width">
-        <input matInput placeholder="Street 2" formControlName="street2">
-      </mat-form-field>
-    </div>
-  </div>
+
   <div class="row">
-    <div class="col">
-      <mat-form-field class="full-width">
-        <input matInput placeholder="City" formControlName="city">
-        <mat-error *ngIf="addressForm.controls.city.errors">
-          {{ addressForm.controls.city.errors['error'] }}
-        </mat-error>
-      </mat-form-field>
-    </div>
-    <div class="col">
-      <mat-form-field class="full-width">
-        <mat-select placeholder="State" formControlName="state">
-          <mat-option *ngFor="let state of states" [value]="state.abbreviation">
-            {{ state.name }}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="addressForm.controls.state.errors">
-          {{ addressForm.controls.state.errors['error'] }}
-        </mat-error>
-      </mat-form-field>
-    </div>
+    <mat-form-field class="col full-width">
+      <input matInput placeholder="City" formControlName="city">
+      <mat-error *ngIf="addressForm.controls.city.errors" class="full-width">
+        {{ addressForm.controls.city.errors['error'] }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col full-width">
+      <mat-select placeholder="State" formControlName="state">
+        <mat-option *ngFor="let state of states" [value]="state.abbreviation" [disabled]="state.disabled">
+          {{ state.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="addressForm.controls.state.errors" class="full-width">
+        {{ addressForm.controls.state.errors['error'] }}
+      </mat-error>
+    </mat-form-field>
   </div>
+
   <div class="row">
-    <div class="col">
-      <mat-form-field class="full-width">
+      <mat-form-field>
         <input matInput placeholder="Postal Code" formControlName="postalCode">
-        <mat-error *ngIf="addressForm.controls.postalCode.errors">
+        <mat-error *ngIf="addressForm.controls.postalCode.errors" class="full-width">
           {{ addressForm.controls.postalCode.errors['error'] }}
         </mat-error>
       </mat-form-field>
-    </div>
   </div>
 </div>

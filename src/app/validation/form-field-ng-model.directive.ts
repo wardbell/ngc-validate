@@ -7,9 +7,11 @@ import { ModelValidators, MODEL_ASYNC_VALIDATORS, MODEL_VALIDATORS } from './int
 import { ValidationContext, VALIDATION_CONTEXT } from './validation-context';
 import { vestAsyncFieldValidator, vestSyncFieldValidator } from './validation-fns';
 
-/** Sets validators for Template-Driven controls using NgModel */
+/** Sets validators for Template-Driven controls using NgModel
+ * Skipped if element with `[ngModel]` also has `no-val` attribute
+*/
 @Directive({
-  selector: '[ngModel]',
+  selector: '[ngModel]:not([no-val])',
 })
 export class FormFieldNgModelDirective implements OnInit {
 
@@ -18,30 +20,30 @@ export class FormFieldNgModelDirective implements OnInit {
    * Blended with global ValidationContext (if it exists).
    * Optional.
    */
-  @Input() context: ValidationContext | undefined;
+  @Input() context?: ValidationContext;
 
   /** Field (property) of the model to validate.
    * If not specified, will use the NgModel name.
    */
-  @Input() field: string | undefined;
+  @Input() field?: string;
 
   /** Group of tests within the validation suite. Only process tests in that group.
    * If not specified, try to pick up from parent FormValidationModelDirective.
    * Optional.
    */
-  @Input() group: string | undefined;
+  @Input() group?: string;
 
   /** Data model whose properties will be validated.
    * If not specified, try to pick up from parent FormValidationModelDirective.
    * Required for validation.
    */
-  @Input() model: Indexable | undefined;
+  @Input() model?: Indexable;
 
   /** Name of the type of model to be validated. Identifies the suite of validators to apply.
    * If not specified, try to pick up from parent FormValidationModelDirective.
    * Required for validation.
    */
-  @Input() modelType: string | undefined;
+  @Input() modelType?: string;
 
   constructor(
     @Optional() private formValidation: FormValidationModelDirective,

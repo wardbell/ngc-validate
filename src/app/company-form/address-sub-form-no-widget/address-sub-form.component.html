@@ -1,0 +1,43 @@
+<div *ngIf="vm" [ngModelGroup]="ngModelGroupName" [model]="vm" modelType="address">
+  <div class="row">
+    <mat-form-field class="col full-width">
+      <input matInput name="street" placeholder="Street" [(ngModel)]="vm.street" #street="ngModel">
+      <mat-error *ngIf="street.errors" class="full-width">
+        {{ street.errors['error'] }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col full-width">
+      <input matInput name="street2" placeholder="Street 2 (unit/apt)" [(ngModel)]="vm.street2">
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field class="col full-width">
+      <input matInput name="city" placeholder="City" [(ngModel)]="vm.city" #city="ngModel">
+      <mat-error *ngIf="city.errors" class="full-width">
+        {{ city.errors['error'] }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="col full-width">
+      <mat-select name="state" placeholder="State" [(ngModel)]="vm.state" #state="ngModel">
+        <mat-option *ngFor="let state of states" [value]="state.abbreviation" [disabled]="state.disabled">
+          {{ state.name }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="state.errors" class="full-width">
+        {{ state.errors['error'] }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field>
+      <input matInput name="postalCode" placeholder="Postal Code" [(ngModel)]="vm.postalCode" #postalCode="ngModel">
+      <mat-error *ngIf="postalCode.errors" class="full-width">
+        {{ postalCode.errors['error'] }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+</div>

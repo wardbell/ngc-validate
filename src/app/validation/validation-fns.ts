@@ -73,7 +73,7 @@ export function makeValidatorsForModel(
  * @param [model] the model data to validate. If missing, create one with the field and control.value
  * @param [group] the name of a group of tests; only process tests in this group.
  * @param [context] global contextual data passed to vest validation rules.
-*/
+ */
 export function vestSyncFieldValidator(
   suite: ValidationSuite,
   field: string,
@@ -81,7 +81,7 @@ export function vestSyncFieldValidator(
   group?: string,
   context?: ValidationContext,
 ): ValidatorFn | ValidatorFn[] {
-  const validator = (control: AbstractControl): ValidationErrors | null => {
+  const vestValidator = (control: AbstractControl): ValidationErrors | null => {
     const result = suite({ ...model, [field]: control.value }, field, group, context).getErrors();
     const errors = result[field];
     return errors ? { error: errors[0], errors } : null;
@@ -92,7 +92,7 @@ export function vestSyncFieldValidator(
   // So if we discover that the field is required, "compose" with that Angular required validator
   const testRun = suite({ [field]: null }, field, group, context).getErrors();
   const isRequired = (testRun[field] || []).some(err => err.includes('is required'));
-  return isRequired ? [validator, Validators.required] : validator;
+  return isRequired ? [vestValidator, Validators.required] : vestValidator;
 }
 
 /** Create Angular asynchronous validator function for a single field of the model in the validation context
@@ -104,7 +104,7 @@ export function vestSyncFieldValidator(
  * @param [model] the model data to validate. If missing, create one with the field and control.value
  * @param [group] the name of a group of tests; only process tests in this group.
  * @param [context] global contextual data passed to vest validation rules.
-*/
+ */
 export function vestAsyncFieldValidator(
   suite: ValidationSuite,
   field: string,
@@ -112,7 +112,7 @@ export function vestAsyncFieldValidator(
   group?: string,
   context?: ValidationContext,
 ): AsyncValidatorFn {
-  const validator = (control: AbstractControl): Promise<ValidationErrors | null> => {
+  const vestAsyncValidator = (control: AbstractControl): Promise<ValidationErrors | null> => {
     const promise = new Promise<ValidationErrors | null>((resolve) => {
       suite({ ...model, [field]: control.value }, field, group, context).done(field, result => {
         const errors = result.getErrors();
@@ -121,5 +121,5 @@ export function vestAsyncFieldValidator(
     })
     return promise;
   };
-  return validator;
+  return vestAsyncValidator;
 }

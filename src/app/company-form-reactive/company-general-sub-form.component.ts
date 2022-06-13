@@ -13,14 +13,12 @@ import { REACTIVE_FORMS } from '@imports';
   template: `
   <div [formGroup]="generalForm">
     <div class="row">
-      <div class="col">
-        <mat-form-field class="full-width">
-          <input matInput placeholder="Legal Name" formControlName="legalName" required>
-          <mat-error *ngIf="generalForm.controls.legalName.errors">
-            {{ generalForm.controls.legalName.errors['error'] }}
-          </mat-error>
-        </mat-form-field>
-      </div>
+      <mat-form-field class="col full-width">
+        <input matInput placeholder="Legal Name" formControlName="legalName" required>
+        <mat-error *ngIf="generalForm.controls.legalName.errors" class="full-width">
+          {{ generalForm.controls.legalName.errors['error'] }}
+        </mat-error>
+      </mat-form-field>
     </div>
   </div>
   `,
@@ -29,7 +27,7 @@ import { REACTIVE_FORMS } from '@imports';
   imports: [REACTIVE_FORMS]
 })
 export class CompanyGeneralFormComponent implements OnInit {
-  @Input() company: Company | undefined;
+  @Input() company?: Company;
 
   protected generalForm = this.fb.group({
     legalName: '',

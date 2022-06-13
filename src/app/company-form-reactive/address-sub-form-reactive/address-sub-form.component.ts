@@ -26,7 +26,7 @@ export class AddressSubFormComponent implements OnInit {
   /** Name for the formGroup when added to the parent form. Defaults to 'address'. */
   @Input('name') formGroupName = 'address';
 
-  @Input() address: Address | undefined;
+  @Input() address?: Address;
 
   protected addressForm = this.fb.group({
     street: '',

@@ -17,7 +17,7 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
   providers: [
-    importProvidersFrom(HttpClientModule, BrowserAnimationsModule),
+    importProvidersFrom(BrowserAnimationsModule, HttpClientModule),
     importProvidersFrom(RouterModule.forRoot(appRoutes)),
     {provide: MODEL_ASYNC_VALIDATORS, useValue: asyncValidators },
     {provide: MODEL_VALIDATORS, useValue: validators },

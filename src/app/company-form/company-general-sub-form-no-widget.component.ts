@@ -10,7 +10,12 @@ import { FORMS } from '@imports';
   template: `
     <div *ngIf="vm">
       <div class="row">
-        <input-text field="legalName" placeholder="Legal Name" class="col full-width"></input-text>
+        <mat-form-field class="col full-width">
+          <input matInput placeholder="Legal Name" name="legalName" [(ngModel)]="vm.legalName" #input="ngModel">
+          <mat-error *ngIf="input.errors" class="full-width">
+            {{ input.errors['error'] }}
+          </mat-error>
+        </mat-form-field>
       </div>
     </div>
   `,

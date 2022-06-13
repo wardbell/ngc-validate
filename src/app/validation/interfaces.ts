@@ -14,9 +14,9 @@ export type ValidationSuite = Suite<ValidationSuiteFn>;
 /** Vest validation suite function. Pass to vest `create()` to make a vest suite. */
 export type ValidationSuiteFn = (
   model: Indexable,
-  field?: string | undefined,
-  group?: string | undefined,
-  vc?: ValidationContext | undefined
+  field?: string,
+  group?: string,
+  vc?: ValidationContext
 ) => void;
 
 /** Extra context for use by validators.

@@ -21,3 +21,9 @@ body {
   font-size: 12px;
   margin: 0.5rem;
 }
+
+// Hide the spinner when the input type is 'number'. The spinner is a bad joke.
+input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
