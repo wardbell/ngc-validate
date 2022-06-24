@@ -1,0 +1,44 @@
+.spinner-container {
+  display: flex;
+  flex-grow: 1;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+
+  .spinner-shade {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(white, 0.6);
+    z-index: 101;
+  }
+
+  .spinner-box {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: auto;
+    height: 200px;
+
+    .spinner-label {
+      width: 300px;
+      text-align: center;
+      padding: 1rem;
+
+      h2 {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  }
+
+  .spinner-animation {
+    width: 100px;
+    margin: auto;
+    flex: 1;
+  }
+}

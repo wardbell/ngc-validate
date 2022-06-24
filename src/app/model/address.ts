@@ -6,4 +6,5 @@ export interface Address extends Indexable {
   city: string | null;
   state: string | null;
   postalCode:string | null;
+  verified?: boolean;
 }

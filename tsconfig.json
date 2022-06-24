@@ -10,6 +10,8 @@
       "@imports": ["src/app/core/imports.ts"],
       "@model": ["src/app/model/index"],
       "@model/*": ["src/app/model/*"],
+      "@services": ["src/app/services/index"],
+      "@services/*": ["src/app/services/*"],
       "@shared": ["src/app/shared/index"],
       "@shared/*": ["src/app/shared/*"],
       "@utils": ["src/app/core/utils/index"],
