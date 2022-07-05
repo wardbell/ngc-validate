@@ -43,5 +43,5 @@ export const formContainerViewProvider: Provider = {
 export function formContainerViewProviderFactory(
   ngForm: NgForm, ngModelGroup: NgModelGroup
 ) {
-  return ngModelGroup || ngForm || null;
+  return ngModelGroup ?? ngForm ?? null;
 }

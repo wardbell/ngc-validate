@@ -31,18 +31,18 @@ export interface SelectOption {
 export function toSelectOptions(
   source: Indexable[] | null | undefined,
   /** Source property to be mapped to `name`. */
-  nameProp ='name',
+  nameProp = 'name',
   /** Source property to be mapped to `value`. */
-  valueProp ='value',
+  valueProp = 'value',
   /** Source property indicating if option is disabled (false by default). */
   disabledProp = 'disabled'
 ): SelectOption[] {
-  return (source || []).map(opt =>
-    ({
-      name: opt[nameProp],
-      value: opt[valueProp],
-      disabled: opt[disabledProp] === true
-    }));
+  return (source ?? []).map(opt =>
+  ({
+    name: opt[nameProp],
+    value: opt[valueProp],
+    disabled: opt[disabledProp] === true
+  }));
 }
 
 /** Trim value if string. */

@@ -21,7 +21,7 @@ enforce.extend({ isEmail, isPostalCode });
  * @param [group] the name of a group of tests; only process tests in this group.
  * @param [context] global contextual data passed to vest validation rules.
  */
- export function addValidatorsToControls(
+export function addValidatorsToControls(
   controlGroup: Indexable<FormControl>,
   suite: ValidationSuite,
   asyncSuite?: ValidationSuite,
@@ -57,7 +57,7 @@ export function makeValidatorsForModel(
   group?: string,
   context?: ValidationContext,
 ) {
-  return (fields || []).reduce((acc, field) => {
+  return (fields ?? []).reduce((acc, field) => {
     const fn = vestSyncFieldValidator(suite, field, model, group, context);
     acc[field] = fn;
     return acc;
@@ -91,7 +91,7 @@ export function vestSyncFieldValidator(
   // Angular Material  looks for an Angular required validator and draws the component label accordingly.
   // So if we discover that the field is required, "compose" with that Angular required validator
   const testRun = suite({ [field]: null }, field, group, context).getErrors();
-  const isRequired = (testRun[field] || []).some(err => err.includes('is required'));
+  const isRequired = (testRun[field] ?? []).some(err => err.includes('is required'));
   return isRequired ? [vestValidator, Validators.required] : vestValidator;
 }
 

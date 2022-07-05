@@ -10,7 +10,7 @@ export const EMPTY_GUID = '00000000000000000000000000000000';
  *
  * @param seed {number} - optional seed for reproducible time-part for testing
  */
- export function getGuid(seed?: number) {
+export function getGuid(seed?: number) {
   // Each new Guid is greater than next if more than 1ms passes
   // See http://thatextramile.be/blog/2009/05/using-the-guidcomb-identifier-strategy
   // Based on breeze.core.getUuid which is based on this StackOverflow answer
@@ -21,9 +21,9 @@ export const EMPTY_GUID = '00000000000000000000000000000000';
   // Replace LAST 6 bytes (12 hex digits) of regular Guid (that's where they sort in a Db)
   //
   // Play with this in jsFiddle: http://jsfiddle.net/wardbell/qS8aN/
-  const timePart = ('00' + (seed || new Date().getTime()).toString(16)).slice(-12);
+  const timePart = ('00' + (seed ?? new Date().getTime()).toString(16)).slice(-12);
   return (
-    'xxxxxxxxxxxx4xxxyxxx'.replace(/[xy]/g, function(c) {
+    'xxxxxxxxxxxx4xxxyxxx'.replace(/[xy]/g, function (c) {
       const r = (Math.random() * 16) | 0,
         v = c === 'x' ? r : (r & 0x3) | 0x8;
       return v.toString(16);

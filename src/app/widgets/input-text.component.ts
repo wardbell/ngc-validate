@@ -33,14 +33,14 @@ import { FormValidationModelDirective, ValidationContext, ValidationModule } fro
   `,
   styles: ['.full-width { width: 100%; }'],
   viewProviders: [formContainerViewProvider],
-  imports: [ CommonModule, FormsModule, MatInputModule, ValidationModule ],
+  imports: [CommonModule, FormsModule, MatInputModule, ValidationModule],
 })
 export class InputTextComponent implements OnInit, AfterViewInit {
   @Input() context?: ValidationContext;
   @Input()
-    get disabled(): boolean { return this._disabled; };
-    set disabled(value: BooleanInput) { this._disabled = coerceBooleanProperty(value); }
-    private _disabled = false;
+  get disabled(): boolean { return this._disabled; };
+  set disabled(value: BooleanInput) { this._disabled = coerceBooleanProperty(value); }
+  private _disabled = false;
 
   @Input() field?: string;
   @Input() group?: string;
@@ -72,8 +72,8 @@ export class InputTextComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.model = this.model || this.formValidation.model;
-    this.name = this.name || `${(this.field || '')}$${nameCounter.next}`;
+    this.model = this.model ?? this.formValidation.model;
+    this.name = this.name || `${(this.field ?? '')}$${nameCounter.next}`;
     this.originalValue = trim(this.model ? this.model[this.field!] : null);
     this.currentValue = this.originalValue;
     if (this.updateOn) {

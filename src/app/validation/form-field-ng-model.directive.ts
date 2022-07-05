@@ -61,7 +61,7 @@ export class FormFieldNgModelDirective implements OnInit {
     const context = { ...this.globalContext, ...(this.context || this.formValidation?.context) };
     const field = this.field || this.ngModel.name;
     const group = this.group || this.formValidation?.group;
-    const model = this.model || this.formValidation?.model;
+    const model = this.model ?? this.formValidation?.model;
     const modelType = this.modelType || this.formValidation?.modelType;
 
     if (!field || !modelType) {

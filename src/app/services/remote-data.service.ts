@@ -34,7 +34,7 @@ export class RemoteDataService {
   }
 
   /** Return terminating observable of list of companies in the mock db */
-  getCompanyList(): Observable<CompanyListItem[]>{
+  getCompanyList(): Observable<CompanyListItem[]> {
     return of(this.db.Company).pipe(
       // Simulate time to load company list
       delay(latencyDelayMs),
@@ -71,7 +71,7 @@ export class RemoteDataService {
   /** Reset the remote mock database to its initial conditions. */
   resetDb() {
     console.log('(Re)created the mock database');
-    this.db = createDemoData() || new Db();
+    this.db = createDemoData() ?? new Db();
     this.storeDb();
     return this.db;
   }

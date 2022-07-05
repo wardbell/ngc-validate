@@ -79,7 +79,7 @@ export class InputSelectComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.model = this.model || this.formValidation.model;
+    this.model = this.model ?? this.formValidation.model;
     this.name = this.name || `${(this.field || '')}$${nameCounter.next}`;
     this.originalValue = trim(this.model ? this.model[this.field!] : null);
     this.currentValue = this.originalValue;
