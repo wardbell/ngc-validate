@@ -1,4 +1,4 @@
-import { Directive, Inject, Input, OnInit, Optional } from '@angular/core';
+import { Directive, Inject, Input, OnChanges, Optional } from '@angular/core';
 import { NgModel } from '@angular/forms';
 
 import { FormValidationModelDirective } from './form-validation-model.directive'
@@ -13,7 +13,7 @@ import { vestAsyncFieldValidator, vestSyncFieldValidator } from './validation-fn
 @Directive({
   selector: '[ngModel]:not([no-val])',
 })
-export class FormFieldNgModelDirective implements OnInit {
+export class FormFieldNgModelDirective implements OnChanges {
 
   /** Context that validators may reference for external information.
    * If not specified, try to pick up from parent FormValidationModelDirective.
@@ -23,7 +23,7 @@ export class FormFieldNgModelDirective implements OnInit {
   @Input() context?: ValidationContext;
 
   /** Field (property) of the model to validate.
-   * If not specified, will use the NgModel name.
+   * If not specified, will use the NgModel control's name (value of the `name` attribute).
    */
   @Input() field?: string;
 
@@ -50,13 +50,14 @@ export class FormFieldNgModelDirective implements OnInit {
     @Optional() @Inject(VALIDATION_CONTEXT) private globalContext: ValidationContext,
     @Optional() @Inject(MODEL_ASYNC_VALIDATORS) private modelAsyncValidators: ModelValidators,
     @Optional() @Inject(MODEL_VALIDATORS) private modelValidators: ModelValidators,
+    /** Form control for the ngModel directive */
     private ngModel: NgModel,
   ) {
     // console.log('ngModel', ngModel);
     // console.log('ngModel.control.validator', this.ngModel.control.validator);
   }
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     // Blend explicit context (if provided) with global context
     const context = { ...this.globalContext, ...(this.context || this.formValidation?.context) };
     const field = this.field || this.ngModel.name;
@@ -77,7 +78,7 @@ export class FormFieldNgModelDirective implements OnInit {
 
     const asyncSuite = this.modelAsyncValidators[modelType];
     if (!!asyncSuite) {
-      const validator = vestAsyncFieldValidator(suite, field, model, group, context);
+      const validator = vestAsyncFieldValidator(asyncSuite, field, model, group, context);
       this.ngModel.control.clearAsyncValidators();
       this.ngModel.control.addAsyncValidators(validator);
     }

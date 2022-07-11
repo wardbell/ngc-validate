@@ -36,7 +36,6 @@ import { FormValidationModelDirective, ValidationContext, ValidationModule } fro
     </mat-error>
   </mat-form-field>
   `,
-  styles: ['.full-width { width: 100%; }'],
   viewProviders: [formContainerViewProvider],
   imports: [CommonModule, FormsModule, MatInputModule, MatSelectModule, ValidationModule],
 })

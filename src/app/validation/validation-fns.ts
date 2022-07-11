@@ -114,10 +114,25 @@ export function vestAsyncFieldValidator(
 ): AsyncValidatorFn {
   const vestAsyncValidator = (control: AbstractControl): Promise<ValidationErrors | null> => {
     const promise = new Promise<ValidationErrors | null>((resolve) => {
-      suite({ ...model, [field]: control.value }, field, group, context).done(field, result => {
-        const errors = result.getErrors();
-        resolve(errors ? { error: errors[0], errors } : null);
-      });
+      console.log(`async validator for ${field} started`);
+      // suite.resetField(field); // doesn't seem to matter
+      suite({ ...model, [field]: control.value }, field, group, context)
+        .done(field, result => {
+          console.log(`async validator for ${field} resolved`);
+          const errors = result.getErrors()[field];
+          resolve(errors ? { error: errors[0], errors } : null);
+        })
+        // Catch case where the field has no async validations
+        .done(_result => {
+          // All validations complete. Resolve w/o error.
+          // Harmless if field DID have async validation and resolved earlier
+          // because this second call to `resolve` would do nothing.
+          // But if the field did NOT have an async validation,
+          // the earlier field resolve would not have been called and
+          // the field status would be "PENDING" forever.
+          // Example: comment out all async validations for "legalName".
+          resolve(null);
+        });
     })
     return promise;
   };

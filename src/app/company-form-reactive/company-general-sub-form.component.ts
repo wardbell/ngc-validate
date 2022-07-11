@@ -45,10 +45,9 @@ export class CompanyGeneralFormComponent implements OnInit {
       if (this.company) {
         // Populate controls
         this.generalForm.setValue({
-          legalName: this.company.legalName
+          legalName: this.company.legalName || ''
         });
       }
     }, 1);
   }
-
 }

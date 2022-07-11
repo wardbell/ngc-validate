@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { filter, take } from 'rxjs/operators';
 
 // // With widgets
 import { AddressSubFormComponent } from './address-sub-form/address-sub-form.component';
@@ -9,15 +10,17 @@ import { CompanyGeneralFormComponent } from './company-general-sub-form.componen
 // import { AddressSubFormComponent } from './address-sub-form-no-widget/address-sub-form.component';
 // import { CompanyGeneralFormComponent } from './company-general-sub-form-no-widget.component';
 
-import { Address, Company } from '@model';
-import { companyValidatorSuite } from '@app/validators';
+import { Company } from '@model';
+import { CompanyFormValidationDemo } from './company-form-validation-demo';
+import { deepClone } from '@utils';
+import { DataService } from '@services';
 import { FORMS } from '@imports';
 
 @Component({
   selector: 'app-company-form',
   standalone: true,
   template: `
-    <form #form="ngForm" [model]="vm" modelType="company">
+    <form *ngIf="vm" #form="ngForm" [model]="vm" modelType="company">
       <mat-card class="company-card">
 
         <mat-card-header class="my-header">
@@ -30,7 +33,7 @@ import { FORMS } from '@imports';
         </mat-card-content>
 
         <mat-card-actions>
-          <button mat-raised-button color="primary" type="button" (click)="onSave(form)">Save</button>
+          <button mat-raised-button color="primary" type="button" (click)="showValidationState(form)">Show Validation State</button>
         </mat-card-actions>
 
       </mat-card>
@@ -39,24 +42,25 @@ import { FORMS } from '@imports';
   styleUrls: ['./company-form.component.scss'],
   imports: [AddressSubFormComponent, CompanyGeneralFormComponent, FORMS]
 })
-export class CompanyFormComponent {
+export class CompanyFormComponent implements OnInit {
+  constructor(
+    private dataService: DataService,
+    private demoService: CompanyFormValidationDemo,
+  ) { }
 
-  vm: Partial<Company> = { workAddress: { } as Address};
+  vm?: Partial<Company>;
 
-  onSave(ngForm: NgForm): void {
-    // Reveal validation state at this form level and all the way down.
+  ngOnInit(): void {
+    this.dataService.company$.pipe(
+      filter(co => co != null),
+      take(1)
+    ).subscribe(co => this.vm = deepClone(co));
+  }
+
+  showValidationState(ngForm: NgForm): void {
+    // DEMO TIME! Reveal validation state at this form level and all the way down.
     ngForm?.form.markAllAsTouched();
-
-    // TODO: save the changes
-
-    // DEMO TIME!
     console.log('ngForm.controls', ngForm.controls);
-    const r = companyValidatorSuite(this.vm);
-    const errors = r.getErrors();
-    console.log('company form vest validation state', r);
-    console.log('vest validation errors', errors);
-
-    const errorCount = Object.keys(errors).length;
-    alert(`Saved! Has ${errorCount ? errorCount : 'no' } errors. Look at browser console.`);
+    this.demoService.demo(this.vm!);
   }
 }

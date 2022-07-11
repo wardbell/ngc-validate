@@ -29,6 +29,7 @@ export function createDemoData() {
 
     const company: Company = {
       id: companyId,
+      fein: '13-1234567',
       legalName: 'Marvelous Products',
       workAddress: {
         street: '321 E Chapman Ave',

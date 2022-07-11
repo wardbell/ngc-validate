@@ -1,12 +1,13 @@
 import { Component, AfterViewInit, ElementRef, EventEmitter, Input, OnInit, Optional, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, NgModel, Validators } from '@angular/forms';
+import { FormControl, FormsModule, NgModel, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 
 import { formContainerViewProvider, Indexable } from '@core';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import { FormHooks, nameCounter, NgModelOptions, trim } from '@app/widgets/interfaces';
 import { FormValidationModelDirective, ValidationContext, ValidationModule } from '@app/validation';
+import { InputErrorComponent } from './input-error.component';
 
 @Component({
   selector: 'input-text',
@@ -26,14 +27,13 @@ import { FormValidationModelDirective, ValidationContext, ValidationModule } fro
       (keyup.esc)="escaped()"
       (blur)="onBlur()"
       #input #ngModel="ngModel">
-    <mat-error *ngIf="ngModel.errors" class="full-width">
-      {{ ngModel.errors['error'] }}
-    </mat-error>
-  </mat-form-field>
+    </mat-form-field>
+    <input-error [control]="ngModel.control"></input-error>
+
   `,
   styles: ['.full-width { width: 100%; }'],
   viewProviders: [formContainerViewProvider],
-  imports: [CommonModule, FormsModule, MatInputModule, ValidationModule],
+  imports: [CommonModule, FormsModule, InputErrorComponent, MatInputModule, ValidationModule],
 })
 export class InputTextComponent implements OnInit, AfterViewInit {
   @Input() context?: ValidationContext;
@@ -59,6 +59,7 @@ export class InputTextComponent implements OnInit, AfterViewInit {
   @ViewChild('ngModel') ngModel?: NgModel;
 
   protected className: string;
+  control?  : FormControl;
   private currentValue: any | null = null;
   private hostEl: HTMLInputElement = this.hostElRef.nativeElement;
   protected ngModelOptions?: NgModelOptions;
@@ -73,6 +74,7 @@ export class InputTextComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.model = this.model ?? this.formValidation.model;
+    this.field = this.field || this.name;
     this.name = this.name || `${(this.field ?? '')}$${nameCounter.next}`;
     this.originalValue = trim(this.model ? this.model[this.field!] : null);
     this.currentValue = this.originalValue;
@@ -82,14 +84,15 @@ export class InputTextComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    this.control = this.ngModel!.control;
     if (this.hostEl.hasAttribute('required')) {
       // Pass it along to the nested input element
       // Wait a tick to bypass ExpressionChangedAfterItHasBeenCheckedError
       setTimeout(() => {
         // Adding the required validator triggers Angular Material
         // to add the required attribute and update the label with the required marker.
-        this.ngModel!.control.addValidators(Validators.required);
-        this.ngModel!.control.updateValueAndValidity({ onlySelf: true });
+        this.control!.addValidators(Validators.required);
+        this.control!.updateValueAndValidity({ onlySelf: true });
       });
     }
   }

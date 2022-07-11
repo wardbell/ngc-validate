@@ -4,4 +4,3 @@ export * from './interfaces';
 export * from './validation-context';
 export * from './validation-fns';
 export * from './validation.module';
-export * from './validation.service';

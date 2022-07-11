@@ -27,3 +27,30 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
   -webkit-appearance: none;
   margin: 0;
 }
+
+.full-width {
+  width: 100%;
+}
+
+.short-width {
+  min-width: 5rem;
+  width: 22%;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.0;
+  }
+}
+
+input-error {
+  .error {
+    color: red;
+    font-size: 80%
+  }
+  .pending {
+    animation: blink 1s step-start 0s infinite;
+    color: blue;
+    font-size: 80%
+  }
+}
