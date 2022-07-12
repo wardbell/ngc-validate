@@ -3,7 +3,10 @@ import { NgModel } from '@angular/forms';
 
 import { FormValidationModelDirective } from './form-validation-model.directive'
 import { Indexable } from '@core';
-import { ModelValidators, MODEL_ASYNC_VALIDATORS, MODEL_VALIDATORS } from './interfaces';
+import {
+  AsyncValidationSuiteFactories, ASYNC_VALIDATION_SUITE_FACTORIES,
+  SYNC_VALIDATION_SUITES, SyncValidationSuites
+} from './interfaces';
 import { ValidationContext, VALIDATION_CONTEXT } from './validation-context';
 import { vestAsyncFieldValidator, vestSyncFieldValidator } from './validation-fns';
 
@@ -12,6 +15,7 @@ import { vestAsyncFieldValidator, vestSyncFieldValidator } from './validation-fn
 */
 @Directive({
   selector: '[ngModel]:not([no-val])',
+  standalone: true,
 })
 export class FormFieldNgModelDirective implements OnChanges {
 
@@ -48,8 +52,8 @@ export class FormFieldNgModelDirective implements OnChanges {
   constructor(
     @Optional() private formValidation: FormValidationModelDirective,
     @Optional() @Inject(VALIDATION_CONTEXT) private globalContext: ValidationContext,
-    @Optional() @Inject(MODEL_ASYNC_VALIDATORS) private modelAsyncValidators: ModelValidators,
-    @Optional() @Inject(MODEL_VALIDATORS) private modelValidators: ModelValidators,
+    @Optional() @Inject(ASYNC_VALIDATION_SUITE_FACTORIES) private asyncValidationSuiteFactories: AsyncValidationSuiteFactories,
+    @Optional() @Inject(SYNC_VALIDATION_SUITES) private syncValidationSuites: SyncValidationSuites,
     /** Form control for the ngModel directive */
     private ngModel: NgModel,
   ) {
@@ -69,15 +73,24 @@ export class FormFieldNgModelDirective implements OnChanges {
       return; // Must have a minimum of the field and modelType to add a validator
     }
 
-    const suite = this.modelValidators[modelType];
+    const suite = this.syncValidationSuites[modelType];
     if (!!suite) {
       const validator = vestSyncFieldValidator(suite, field, model, group, context);
       this.ngModel.control.clearValidators();
       this.ngModel.control.addValidators(validator);
     }
 
-    const asyncSuite = this.modelAsyncValidators[modelType];
-    if (!!asyncSuite) {
+    /* Async suite factory creates a vest suite of async validations for the given model type
+     *
+     * Each async validator needs its own instance of the async vest suite.
+     * You can only call `done()` once per suite invocation.
+     * If you call `done()` twice while an async operation is flight,
+     * that operation's resolution will not be caught by the later `done()`.
+     * So we need to isolate suite instances.
+     */
+    const asyncSuiteFactory = this.asyncValidationSuiteFactories[modelType];
+    if (!!asyncSuiteFactory) {
+      const asyncSuite = asyncSuiteFactory();
       const validator = vestAsyncFieldValidator(asyncSuite, field, model, group, context);
       this.ngModel.control.clearAsyncValidators();
       this.ngModel.control.addAsyncValidators(validator);

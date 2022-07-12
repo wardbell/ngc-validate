@@ -37,8 +37,16 @@ export class AddressFormComponent {
 
   constructor(private fb: FormBuilder) {
   }
-
-  onSubmit(): void {
-    alert('Saved! Look at browser console.');
+  
+  /** DEMO: validate the address reactive form and display aspects of it in the browser console */
+  showValidationState(): void {
+    console.groupCollapsed('Address Reactive Form Validation State');
+    this.addressForm.markAllAsTouched();
+    console.log('ngForm.controls', this.addressForm.controls);
+    const errors = this.addressForm.errors ?? {};
+    console.log('errors', errors);
+    console.groupEnd();
+    const errorCount = Object.keys(errors).length;
+    alert(`Has ${errorCount ? errorCount : 'no'} errors. Look at browser console.`);
   }
 }

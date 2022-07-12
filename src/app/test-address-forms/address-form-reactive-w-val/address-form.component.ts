@@ -8,8 +8,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 
 import { Address, UsStates } from '@model';
-import { addValidatorsToControls } from '@app/validation';
-import { addressValidatorSuite } from '@app/validators';
+import { addressSyncValidationSuite } from '@validators';
+import { addValidatorsToControls } from '@validation';
 
 @Component({
   selector: 'app-address-form',
@@ -36,14 +36,19 @@ export class AddressFormComponent {
   states = UsStates;
 
   constructor(private fb: FormBuilder) {
-    addValidatorsToControls(this.addressForm.controls, addressValidatorSuite);
+    addValidatorsToControls(this.addressForm.controls, addressSyncValidationSuite);
   }
 
-  onSubmit(): void {
-    alert('Saved! Look at browser console.');
-    const r = addressValidatorSuite(this.addressForm.value as unknown as Address);
+  /** DEMO: validate the address reactive form and display aspects of it in the browser console */
+  showValidationState(): void {
+    console.groupCollapsed('Address Reactive Form Validation State');
+    addressSyncValidationSuite.reset();
+    const r = addressSyncValidationSuite(this.addressForm.value as unknown as Address);
     console.log('address form validation state', r);
-
-    console.log('errors', r.getErrors());
+    const errors = r.getErrors();
+    console.log('errors', errors);
+    console.groupEnd();
+    const errorCount = Object.keys(errors).length;
+    alert(`Has ${errorCount ? errorCount : 'no'} errors. Look at browser console.`);
   }
 }

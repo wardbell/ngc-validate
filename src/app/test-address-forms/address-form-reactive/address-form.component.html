@@ -1,7 +1,7 @@
-<form [formGroup]="addressForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="addressForm" (ngSubmit)="showValidationState()">
   <mat-card class="address-card">
     <mat-card-header class="my-header">
-      <mat-card-title>Test Address</mat-card-title>
+      <mat-card-title>Test Address (Reactive - UI Validation)</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <div class="row">
@@ -66,7 +66,7 @@
       </div>
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button color="primary" type="submit">Save</button>
+      <button mat-raised-button color="primary" type="submit">Show Validation State</button>
     </mat-card-actions>
   </mat-card>
 </form>

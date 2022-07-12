@@ -1,19 +1,20 @@
 import { create, enforce, group, only, test } from 'vest';
 
-import { addressValidators } from './address.validator';
+import { addressSyncValidations } from './address.sync-validations';
 import { Company } from '@model';
 import { isGoodFein } from '@services/fein-validation.service';
-import { ValidationContext, ValidationSuite, ValidationSuiteFn } from '@app/validation';
+import { ValidationContext, ValidationSuite, ValidationSuiteFn } from '@validation';
 
 /** Company Synchronous Validation Suite */
-export const companyValidatorSuite: ValidationSuite =
+export const companySyncValidationSuite: ValidationSuite =
   create((model: Partial<Company>, field?: string, groupName?: string, context?: ValidationContext) => {
     only(field);
-    group('company', () => companyValidators(model, field, groupName, context));
-    group('workAddress', () => addressValidators(model.workAddress!, field, groupName, context));
+    group('company', () => companySyncValidations(model, field, groupName, context));
+    group('workAddress', () => addressSyncValidations(model.workAddress!, field, groupName, context));
   });
 
-export const companyValidators: ValidationSuiteFn = (model: Partial<Company>) => {
+/** Company Synchronous Validations, written in vest. */
+export const companySyncValidations: ValidationSuiteFn = (model: Partial<Company>) => {
   test('legalName', 'Legal Name is required', () => {
     enforce(model.legalName).isNotBlank();
   });

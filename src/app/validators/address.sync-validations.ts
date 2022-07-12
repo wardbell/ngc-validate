@@ -1,15 +1,15 @@
 import { create, enforce, only, test } from 'vest';
 
 import { Address, UsStates } from '@model';
-import { ValidationContext, ValidationSuite, ValidationSuiteFn } from '@app/validation';
+import { ValidationContext, ValidationSuite, ValidationSuiteFn } from '@validation';
 
-export const addressValidatorSuite: ValidationSuite =
+export const addressSyncValidationSuite: ValidationSuite =
   create((model: Partial<Address>, field?: string, groupName?: string, context?: ValidationContext) => {
     only(field);
-    addressValidators(model, field, groupName, context);
+    addressSyncValidations(model, field, groupName, context);
   });
 
-export const addressValidators: ValidationSuiteFn = (model: Partial<Address>) => {
+export const addressSyncValidations: ValidationSuiteFn = (model: Partial<Address>) => {
   test('street', 'Street is required', () => {
     enforce(model.street).isNotBlank();
   });

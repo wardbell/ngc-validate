@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 
 import { FeinValidationService } from '@services';
 
-import { ValidationContext } from '@app/validation/interfaces';
+import { ValidationContext } from '@validation/interfaces';
 
 export interface AppValidationContext extends ValidationContext {
   feinValidationService: FeinValidationService

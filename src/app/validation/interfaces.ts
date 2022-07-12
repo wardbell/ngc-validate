@@ -2,10 +2,13 @@ import { InjectionToken } from '@angular/core';
 import { Indexable } from '@utils';
 import { Suite } from 'vest';
 
-export const MODEL_ASYNC_VALIDATORS = new InjectionToken('Model Async Validators');
-export const MODEL_VALIDATORS = new InjectionToken('Model Validators');
+export const ASYNC_VALIDATION_SUITE_FACTORIES = new InjectionToken('Async Validation Suite Factories');
+export const SYNC_VALIDATION_SUITES = new InjectionToken('Synchronous Validation Suites');
 
-export interface ModelValidators extends Indexable<ValidationSuite> {
+export interface AsyncValidationSuiteFactories extends Indexable<() => ValidationSuite> {
+}
+
+export interface SyncValidationSuites extends Indexable<ValidationSuite> {
 }
 
 /** Vest validation suite as constructed in this app. */

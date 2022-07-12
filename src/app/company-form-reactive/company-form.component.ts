@@ -5,7 +5,7 @@ import { AddressSubFormComponent } from './address-sub-form-reactive/address-sub
 import { CompanyGeneralFormComponent } from './company-general-sub-form.component';
 
 import { Address, Company } from '@model';
-import { companyValidatorSuite } from '@app/validators';
+import { companySyncValidationSuite } from '@validators';
 import { FORMS } from '@imports';
 
 @Component({
@@ -29,22 +29,22 @@ export class CompanyFormComponent {
     } as Address
   };
 
-  onSave(ngForm: NgForm): void {
+  /** DEMO: validate the company form VM and display aspects of it in the browser console */
+  showValidationState(ngForm: NgForm): void {
     // Reveal validation state at this form level and all the way down.
     ngForm?.form.markAllAsTouched();
 
-    // Extract raw control values
-    // TODO: save the changes
-    const controlValues = ngForm.value;
-
-    // DEMO TIME!
+    console.groupCollapsed('Company Form Control State');
     console.log('ngForm.controls', ngForm.controls);
-    const r = companyValidatorSuite(controlValues);
-    const errors = r.getErrors();
-    console.log('company form vest validation state', r);
-    console.log('vest validation errors', errors);
 
-    const errorCount = Object.keys(errors).length;
-    alert(`Saved! Has ${errorCount ? errorCount : 'no' } errors. Look at browser console.`);
+    companySyncValidationSuite.reset();
+    // Pass raw control values directly to the validation suite
+    const syncResult = companySyncValidationSuite(ngForm.value);
+    const syncErrors = syncResult.getErrors();
+    console.log('company form vest synchronous validation state', syncResult);
+    console.log('vest synchronous validation errors', syncErrors);
+    console.groupEnd();
+    const errorCount = Object.keys(syncErrors).length;
+    alert(`Has ${errorCount ? errorCount : 'no'} errors. Look at browser console.`);
   }
 }

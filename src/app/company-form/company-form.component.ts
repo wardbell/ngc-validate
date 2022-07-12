@@ -24,7 +24,7 @@ import { FORMS } from '@imports';
       <mat-card class="company-card">
 
         <mat-card-header class="my-header">
-          <mat-card-title>Company</mat-card-title>
+          <mat-card-title>Company (Template Driven)</mat-card-title>
         </mat-card-header>
 
         <mat-card-content>

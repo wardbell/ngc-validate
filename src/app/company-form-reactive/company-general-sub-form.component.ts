@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, NgForm } from '@angular/forms';
 
-import { addValidatorsToControls } from '@app/validation';
-import { companyValidatorSuite } from '@app/validators';
+import { addValidatorsToControls } from '@validation';
+import { companySyncValidationSuite } from '@validators';
 import { Company } from '@model';
 import { formContainerViewProvider } from '@core';
 import { REACTIVE_FORMS } from '@imports';
@@ -33,7 +33,7 @@ export class CompanyGeneralFormComponent implements OnInit {
     legalName: '',
   });
   constructor(private fb: FormBuilder, private parent: NgForm) {
-    addValidatorsToControls(this.generalForm.controls, companyValidatorSuite);
+    addValidatorsToControls(this.generalForm.controls, companySyncValidationSuite);
   }
 
   ngOnInit(): void {

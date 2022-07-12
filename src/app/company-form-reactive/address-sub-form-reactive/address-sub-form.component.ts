@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, NgForm } from '@angular/forms';
 
 import { Address } from '@model';
-import { addValidatorsToControls } from '@app/validation';
-import { addressValidatorSuite } from '@app/validators';
+import { addValidatorsToControls } from '@validation';
+import { addressSyncValidationSuite } from '@validators';
 import { REACTIVE_FORMS } from '@imports';
 import { UsStates } from '@model';
 
@@ -41,7 +41,7 @@ export class AddressSubFormComponent implements OnInit {
   states = UsStates;
 
   constructor(private fb: FormBuilder, private parent: NgForm) {
-    addValidatorsToControls(this.addressForm.controls, addressValidatorSuite);
+    addValidatorsToControls(this.addressForm.controls, addressSyncValidationSuite);
   }
 
   ngOnInit(): void {

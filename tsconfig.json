@@ -18,6 +18,8 @@
       "@utils/*": ["src/app/core/utils/*"],
       "@validation": ["src/app/validation/index"],
       "@validation/*": ["src/app/validation/*"],
+      "@validators": ["src/app/validators/index"],
+      "@validators/*": ["src/app/validators/*"],
     },
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",

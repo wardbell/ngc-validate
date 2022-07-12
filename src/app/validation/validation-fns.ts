@@ -15,22 +15,22 @@ enforce.extend({ isEmail, isPostalCode });
 /** Create and add Angular sync Validators to all the given form controls
  * @param controlGroup an object whose properties are the field names and values are FormControls.
  * ex: an Angular `FormGroup`. Note can only be one level deep and not include FormArrays.
- * @param suite the vest suite with synchronous validation rules
- * @param [asyncSuite] the vest suite with asynchronous validation rules
+ * @param syncSuite the vest suite with synchronous validation rules
+ * @param [asyncSuite] optional vest suite with asynchronous validation rules
  * @param [model] the model data to validate. If missing, create one with the field and control.value
  * @param [group] the name of a group of tests; only process tests in this group.
  * @param [context] global contextual data passed to vest validation rules.
  */
 export function addValidatorsToControls(
   controlGroup: Indexable<FormControl>,
-  suite: ValidationSuite,
+  syncSuite: ValidationSuite,
   asyncSuite?: ValidationSuite,
   model?: Indexable,
   group?: string,
   context?: ValidationContext,
 ) {
   Object.entries(controlGroup).forEach(([field, control]) => {
-    const validator = vestSyncFieldValidator(suite, field, model, group, context);
+    const validator = vestSyncFieldValidator(syncSuite, field, model, group, context);
     control.clearValidators(); // start over
     control.addValidators(validator);
 
@@ -40,28 +40,6 @@ export function addValidatorsToControls(
       control.addAsyncValidators(validator);
     }
   })
-}
-
-/** Create Angular sync Validator functions for each of the given fields
- * NOT USED?
- * @param fields to validate
- * @param suite the vest suite with validation rules
- * @param [model] the model data to validate. If missing, create one with the field and control.value
- * @param [group] the name of a group of tests; only process tests in this group.
- * @param [context] global contextual data passed to vest validation rules.
- */
-export function makeValidatorsForModel(
-  fields: string[],
-  suite: ValidationSuite,
-  model?: Indexable,
-  group?: string,
-  context?: ValidationContext,
-) {
-  return (fields ?? []).reduce((acc, field) => {
-    const fn = vestSyncFieldValidator(suite, field, model, group, context);
-    acc[field] = fn;
-    return acc;
-  }, {} as Indexable);
 }
 
 /** Create Angular synchronous validator function for a single field of the model in the validation context.
@@ -99,11 +77,19 @@ export function vestSyncFieldValidator(
  * When validation fails, the function returns a validation errors with two properties:
  * `error` - the first vest validation error,
  * `errors` - all of the vest validation errors for that field.
- * @param suite the vest suite with async validation rules
+ * @param suite that creates the vest suite with async validation rules.
  * @param field to validate
  * @param [model] the model data to validate. If missing, create one with the field and control.value
  * @param [group] the name of a group of tests; only process tests in this group.
  * @param [context] global contextual data passed to vest validation rules.
+ *
+ * The must be a unique instance!
+ *
+ * Each async validator needs its own instance of the async vest suite.
+ * You can only call `done()` once per suite invocation.
+ * If you call `done()` twice while an async operation is flight,
+ * that operation's resolution will not be caught by the later `done()`.
+ * So we need to isolate suite instances.
  */
 export function vestAsyncFieldValidator(
   suite: ValidationSuite,
@@ -112,13 +98,13 @@ export function vestAsyncFieldValidator(
   group?: string,
   context?: ValidationContext,
 ): AsyncValidatorFn {
+  // console.log(`*** Creating vestAsyncValidator for field ${field}`)
   const vestAsyncValidator = (control: AbstractControl): Promise<ValidationErrors | null> => {
     const promise = new Promise<ValidationErrors | null>((resolve) => {
-      console.log(`async validator for ${field} started`);
-      // suite.resetField(field); // doesn't seem to matter
+      // console.log(`async validator for ${field} started`);
       suite({ ...model, [field]: control.value }, field, group, context)
         .done(field, result => {
-          console.log(`async validator for ${field} resolved`);
+          // console.log(`async validator for ${field} resolved`);
           const errors = result.getErrors()[field];
           resolve(errors ? { error: errors[0], errors } : null);
         })

@@ -1,13 +1,11 @@
 import { Component, AfterViewInit, ElementRef, EventEmitter, Input, OnInit, Optional, Output, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule, NgModel, Validators } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
+import { NgModel, Validators } from '@angular/forms';
 
-import { formContainerViewProvider, Indexable } from '@core';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { formContainerViewProvider, Indexable } from '@core';
+import { FORMS } from '@imports';
 import { FormHooks, nameCounter, NgModelOptions, SelectOption, trim } from '@app/widgets/interfaces';
-import { FormValidationModelDirective, ValidationContext, ValidationModule } from '@app/validation';
+import { FormValidationModelDirective, ValidationContext } from '@validation';
 
 @Component({
   selector: 'input-select',
@@ -37,7 +35,7 @@ import { FormValidationModelDirective, ValidationContext, ValidationModule } fro
   </mat-form-field>
   `,
   viewProviders: [formContainerViewProvider],
-  imports: [CommonModule, FormsModule, MatInputModule, MatSelectModule, ValidationModule],
+  imports: [FORMS],
 })
 export class InputSelectComponent implements OnInit, AfterViewInit {
   @Input() context?: ValidationContext;

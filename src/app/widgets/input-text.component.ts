@@ -1,12 +1,11 @@
 import { Component, AfterViewInit, ElementRef, EventEmitter, Input, OnInit, Optional, Output, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormControl, FormsModule, NgModel, Validators } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
+import { FormControl, NgModel, Validators } from '@angular/forms';
 
-import { formContainerViewProvider, Indexable } from '@core';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { formContainerViewProvider, Indexable } from '@core';
 import { FormHooks, nameCounter, NgModelOptions, trim } from '@app/widgets/interfaces';
-import { FormValidationModelDirective, ValidationContext, ValidationModule } from '@app/validation';
+import { FORMS } from '@imports';
+import { FormValidationModelDirective, ValidationContext } from '@validation';
 import { InputErrorComponent } from './input-error.component';
 
 @Component({
@@ -33,7 +32,7 @@ import { InputErrorComponent } from './input-error.component';
   `,
   styles: ['.full-width { width: 100%; }'],
   viewProviders: [formContainerViewProvider],
-  imports: [CommonModule, FormsModule, InputErrorComponent, MatInputModule, ValidationModule],
+  imports: [FORMS, InputErrorComponent],
 })
 export class InputTextComponent implements OnInit, AfterViewInit {
   @Input() context?: ValidationContext;
@@ -59,7 +58,7 @@ export class InputTextComponent implements OnInit, AfterViewInit {
   @ViewChild('ngModel') ngModel?: NgModel;
 
   protected className: string;
-  control?  : FormControl;
+  control?: FormControl;
   private currentValue: any | null = null;
   private hostEl: HTMLInputElement = this.hostElRef.nativeElement;
   protected ngModelOptions?: NgModelOptions;

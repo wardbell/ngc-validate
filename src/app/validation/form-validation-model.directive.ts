@@ -9,6 +9,7 @@ import { Indexable } from '@utils';
  */
 @Directive({
   selector: 'form[model][modelType]:not([ngNoForm]):not([formGroup]),ng-form[model][modelType],[ngForm][model][modelType],[ngModelGroup][model][modelType],[val-model]',
+  standalone: true,
 })
 export class FormValidationModelDirective implements OnChanges {
   /** data model whose properties will be validated. Required. */
