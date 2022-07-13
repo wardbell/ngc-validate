@@ -20,7 +20,7 @@ import { FORMS } from '@imports';
   selector: 'app-company-form',
   standalone: true,
   imports: [AddressSubFormComponent, CompanyGeneralFormComponent, FORMS],
-  
+
   template: `
     <form *ngIf="vm" #form="ngForm" [model]="vm" modelType="company">
       <mat-card>
@@ -31,6 +31,9 @@ import { FORMS } from '@imports';
 
         <mat-card-content>
           <app-company-general-sub-form [vm]="vm"></app-company-general-sub-form>
+
+          <h2>Work Address</h2>
+
           <app-address-sub-form [vm]="vm.workAddress" name="workAddress"></app-address-sub-form>
         </mat-card-content>
 
