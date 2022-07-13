@@ -85,6 +85,14 @@ export class DataService {
     return false;
   }
 
+  /** Create a new company and load it.
+   * @param [name] optional name of the created company
+   * @returns Terminating observable of the created CompanyData
+   */
+  createCompany(name?: string): Observable<CompanyData> {
+    return this.remoteDataService.createCompany(name);
+  }
+
   /** Dump the app cache to the console for inspection. */
   dumpCache() {
     const cache = this.cacheNow();
@@ -93,7 +101,7 @@ export class DataService {
 
   /** Return terminating observable of list of companies in the mock db */
   getCompanyList(): Observable<CompanyListItem[]>{
-    return this.busyService.busyNoDelay$('Loading ...', this.remoteDataService.getCompanyList());
+    return this.busyService.busyNoDelay$('Loading company list ...', this.remoteDataService.getCompanyList());
   }
 
   /** Initialize the current company in cache when the app loads. */
@@ -162,5 +170,32 @@ export class DataService {
   /** Reset the remote mock database to its initial state. */
   resetDb() {
     this.remoteDataService.resetDb();
+  }
+
+  /** Save company data after updating the cache
+   * @param companyData with one, some, or all of the CompanyData properties (company graph).
+   * Critical: each data property must be a complete replacement for that property.
+   * @returns Terminating boolean observable emitting true (if succeeded) else false
+   */
+  saveCompanyData(companyData: Partial<CompanyData>): Observable<boolean> {
+    try {
+      const { company, employees, employeeTaxes} = companyData;
+      // TODO: add safety checks
+      const currentCache = this.cacheNow();
+      const saveData: CompanyData = {
+        company: company ?? currentCache.company,
+        employees: employees ?? currentCache.employees,
+        employeeTaxes: employeeTaxes ?? currentCache.employeeTaxes,
+      }
+
+      // Update cache optimistically
+      const newCache = { ...currentCache, ...saveData };
+      this.cacheSubject.next(newCache);
+      const saver$ = this.remoteDataService.saveCompanyData(saveData);
+      return this.busyService.busy$('Saving company data ...', saver$);
+    } catch(e) {
+      console.error('Company save failed', e);
+      return of(false);
+    }
   }
 }

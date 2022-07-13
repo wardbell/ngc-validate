@@ -10,9 +10,9 @@ import { CompanyGeneralFormComponent } from './company-general-sub-form.componen
 // import { AddressSubFormComponent } from './address-sub-form-no-widget/address-sub-form.component';
 // import { CompanyGeneralFormComponent } from './company-general-sub-form-no-widget.component';
 
+import { areDifferent, deepClone } from '@utils';
 import { Company } from '@model';
 import { CompanyFormValidationDemo } from './company-form-validation-demo';
-import { deepClone } from '@utils';
 import { DataService } from '@services';
 import { FORMS } from '@imports';
 
@@ -50,11 +50,25 @@ export class CompanyFormComponent implements OnInit {
 
   vm?: Partial<Company>;
 
+  canLeave() {
+    return this.save();
+  }
+
   ngOnInit(): void {
     this.dataService.company$.pipe(
       filter(co => co != null),
       take(1)
     ).subscribe(co => this.vm = deepClone(co));
+  }
+
+  /** Save company changes if there are any. */
+  private save() {
+    const { company } = this.dataService.cacheNow();
+    if (areDifferent(company, this.vm)) {
+      return this.dataService.saveCompanyData({company: this.vm as Company});
+    } else {
+      return true; // no change
+    }
   }
 
   showValidationState(ngForm: NgForm): void {

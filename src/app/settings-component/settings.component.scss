@@ -1,0 +1,30 @@
+
+.settings-card {
+  margin: 1rem auto;
+  max-width: 100rem;
+  min-width: 10rem;
+  width: 95%;
+}
+
+.my-header {
+  margin-left: -16px;
+}
+
+.mat-radio-button {
+  display: block;
+  margin: 5px 0;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.col {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.col:last-child {
+  margin-right: 0;
+}

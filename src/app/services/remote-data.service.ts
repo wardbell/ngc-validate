@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
-import { delay, map, tap } from 'rxjs/operators';
+import { delay, map } from 'rxjs/operators';
 
 import { createDemoData } from './demo-data';
-import { Company } from '@model';
+import { Company, createCompany } from '@model';
 import { CompanyData, CompanyListItem } from './data.service';
 import { Db } from './db';
 import { deepClone } from '@utils';
@@ -31,6 +31,15 @@ export class RemoteDataService {
       }
     }
     this.db = db == null ? this.resetDb() : db;
+  }
+
+  createCompany(name?: string): Observable<CompanyData> {
+    const data: CompanyData = {
+      company: createCompany(name),
+      employees: [],
+      employeeTaxes: [],
+    }
+    return of(this.saveCompanyDataCore(data)).pipe(delay(latencyDelayMs));
   }
 
   /** Return terminating observable of list of companies in the mock db */
@@ -74,6 +83,61 @@ export class RemoteDataService {
     this.db = createDemoData() ?? new Db();
     this.storeDb();
     return this.db;
+  }
+
+  saveCompanyData(companyData: CompanyData): Observable<boolean> {
+    try {
+      this.saveCompanyDataCore(companyData);
+      return of(true).pipe(delay(latencyDelayMs));
+    } catch (e) {
+      console.error('RemoteDataService: Save CompanyData failed: ' + e);
+      return throwError(() => 'Save CompanyData failed: ' + e);
+    }
+  }
+
+  private saveCompanyDataCore(companyData: CompanyData): CompanyData {
+    this.guardBadCompanyData(companyData);
+
+    companyData = deepClone(companyData);
+    const { company, employees, employeeTaxes } = companyData
+    const companyId = company!.id;
+    if (this.db.Company.some(c => c.id === companyId)) {
+      // update existing company
+      this.db.Company = this.db.Company.map(c => c.id === companyId ? company! : c);
+      this.db.Employee = this.db.Employee.filter(ee => ee.companyId !== companyId).concat(employees);
+      this.db.EmployeeTax = this.db.EmployeeTax.filter(et => et.companyId !== companyId).concat(employeeTaxes);
+    } else {
+      // add new company
+      this.db.Company = this.db.Company.concat(company!);
+      this.db.Employee = this.db.Employee.concat(employees);
+      this.db.EmployeeTax = this.db.EmployeeTax.concat(employeeTaxes);
+    }
+    this.storeDb();
+    return companyData;
+  }
+
+  /** Throw if the supplied data are structurally bad. */
+  private guardBadCompanyData(companyData: CompanyData) {
+    const { company, employees, employeeTaxes } = companyData;
+    const companyId = company!.id;
+    if (!companyId) {
+      throw 'No company id';
+    }
+    if (!company!.legalName) {
+      throw 'No company legalName';
+    }
+    if (employees.some(e => e.companyId !== companyId)) {
+      throw 'An employee does not have the right companyId';
+    }
+    if (employees.some(e => !e.id || 1 !== employees.filter(e2 => e2.id === e.id).length)) {
+      throw 'There are blank or duplicate employee ids';
+    }
+    if (employeeTaxes.some(et => et.companyId !== companyId)) {
+      throw 'An employee tax does not have the right companyId';
+    }
+    if (employeeTaxes.some(et => !et.id || 1 !== employeeTaxes.filter(et2 => et2.id === et.id).length)) {
+      throw 'There are blank or duplicate employeeTax ids';
+    }
   }
 
   private storeDb() {

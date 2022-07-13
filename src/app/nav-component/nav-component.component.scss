@@ -10,6 +10,10 @@
   background: inherit;
 }
 
+.material-icons {
+  margin-right: 0.2rem;
+}
+
 .mat-toolbar.mat-primary {
   position: sticky;
   top: 0;
@@ -28,3 +32,17 @@ mat-nav-list {
   margin-right: 0.5rem;
 }
 
+hr {
+  margin: 1rem 1.5rem
+}
+
+h2 {
+  color: grey;
+  font-size: 18px;
+  margin-left: 1.2rem;
+}
+
+.other .mat-list-item {
+  color: grey;
+  font-size: 90%;
+}
