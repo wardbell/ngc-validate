@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ElementRef, EventEmitter, Input, OnInit, Optional, Output, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, EventEmitter, HostBinding, Input, OnInit, Optional, Output, ViewChild } from '@angular/core';
 import { NgModel, Validators } from '@angular/forms';
 
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
@@ -11,6 +11,9 @@ import { FormValidationModelDirective, ValidationContext } from '@validation';
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'input-select',
   standalone: true,
+  imports: [FORMS],
+  viewProviders: [formContainerViewProvider],
+
   template: `
   <mat-form-field [ngClass]="className">
     <mat-label *ngIf="label">{{label}}</mat-label>
@@ -35,10 +38,9 @@ import { FormValidationModelDirective, ValidationContext } from '@validation';
     </mat-error>
   </mat-form-field>
   `,
-  viewProviders: [formContainerViewProvider],
-  imports: [FORMS],
 })
 export class InputSelectComponent implements OnInit, AfterViewInit {
+  @HostBinding('class') get klass() { return this.className; }
   @Input() context?: ValidationContext;
   @Input()
   get disabled(): boolean { return this._disabled; };
@@ -73,11 +75,12 @@ export class InputSelectComponent implements OnInit, AfterViewInit {
     @Optional() private formValidation: FormValidationModelDirective,
     private hostElRef: ElementRef
   ) {
-    this.className = this.hostEl.className;
-  }
+    // Apply the class attribute on the host; if none, apply app standard CSS classes
+    this.className = this.hostEl.className || "col full-width" ;  }
 
   ngOnInit(): void {
     this.model = this.model ?? this.formValidation.model;
+    this.field = this.field || this.name;
     this.name = this.name || `${(this.field || '')}$${nameCounter.next}`;
     this.originalValue = trim(this.model ? this.model[this.field!] : null);
     this.currentValue = this.originalValue;

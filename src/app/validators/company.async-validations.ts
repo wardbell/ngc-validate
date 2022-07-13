@@ -1,4 +1,4 @@
-import { create, group, only, test } from 'vest';
+import { create, enforce, group, only, test } from 'vest';
 
 import { AppValidationContext } from './app-validation-context';
 import { Company } from '@model';
@@ -42,9 +42,7 @@ export const companyAsyncValidations: ValidationSuiteFn =
       if (isGoodFein(model.fein)) {
         const response = await checkFein(model.fein!);
         // console.log('fein checkFein response', response);
-        if (response.feinName == null) {
-          throw 'Tax Number is not registered with the IRS';
-        }
+        enforce(response.feinName).isNotNullish();
       }
       return ''; // All other cases are either OK or the test does not apply
     });

@@ -34,13 +34,11 @@ export class FormFieldNgModelDirective implements OnChanges {
   /** Group name of tests within the validation suite.
    * If not specified, try to pick up from parent FormValidationModelDirective.
    * If there is a group name, only process tests in that group.
-   * Optional.
    */
   @Input() group?: string;
 
   /** Data model whose properties will be validated.
    * If not specified, try to pick up from parent FormValidationModelDirective.
-   * Required for validation.
    */
   @Input() model?: Indexable;
 
@@ -61,16 +59,16 @@ export class FormFieldNgModelDirective implements OnChanges {
 
   ngOnChanges(): void {
     const field = this.field || this.ngModel.name; // if no field name, assume the name of the control is the field name.
+    const model = this.model ?? this.formValidation?.model;
     const modelType = this.modelType || this.formValidation?.modelType;
 
-    if (!field || !modelType) {
-      return; // Must have a minimum of the field and modelType to add a validator
+    if (!field || !model || !modelType) {
+      return; // Must have the field, model, and modelType to add a validator
     }
 
     // Blend contexts with more local context (ex: this.context) taking precedence.
     const context = { ...this.globalContext, ...this.formValidation?.context, ...this.context };
     const group = this.group || this.formValidation?.group;
-    const model = this.model ?? this.formValidation?.model;
 
     const suite = this.syncValidationSuites[modelType];
     if (!!suite) {

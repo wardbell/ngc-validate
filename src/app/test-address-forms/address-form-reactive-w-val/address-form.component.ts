@@ -20,7 +20,6 @@ import { addValidatorsToControls } from '@validation';
     MatButtonModule, MatCardModule, MatInputModule, MatRadioModule, MatSelectModule,
     ReactiveFormsModule
   ],
-  styleUrls: ['./address-form.component.scss']
 })
 export class AddressFormComponent {
   addressForm = this.fb.group({

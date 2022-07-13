@@ -11,16 +11,11 @@ import { FORMS } from '@imports';
   viewProviders: [formContainerViewProvider],
 
   template: `
-    <div *ngIf="vm" class="row">
-      <mat-form-field class="col full-width">
-        <input matInput placeholder="Legal Name" name="legalName" [(ngModel)]="vm.legalName" #input="ngModel">
-        <mat-error *ngIf="input.errors" class="full-width">
-          {{ input.errors['error'] }}
-        </mat-error>
-      </mat-form-field>
+    <div class="row">
+      <input-text name="legalName" placeholder="Legal Name"></input-text>
     </div>
   `,
 })
-export class CompanyGeneralFormComponent {
+export class CompanyGeneralFormComponent{
   @Input() vm?: Partial<Company>;
 }

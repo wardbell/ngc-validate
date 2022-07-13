@@ -12,7 +12,6 @@ import { FORMS } from '@imports';
   selector: 'app-company-form',
   standalone: true,
   templateUrl: './company-form.component.html',
-  styleUrls: ['./company-form.component.scss'],
   imports: [AddressSubFormComponent, CompanyGeneralFormComponent, FORMS]
 })
 export class CompanyFormComponent {

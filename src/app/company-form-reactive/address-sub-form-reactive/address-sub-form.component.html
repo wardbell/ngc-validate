@@ -33,7 +33,7 @@
   </div>
 
   <div class="row">
-      <mat-form-field>
+      <mat-form-field class="col short-width">
         <input matInput placeholder="Postal Code" formControlName="postalCode">
         <mat-error *ngIf="addressForm.controls.postalCode.errors" class="full-width">
           {{ addressForm.controls.postalCode.errors['error'] }}

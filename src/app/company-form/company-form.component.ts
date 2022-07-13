@@ -19,12 +19,14 @@ import { FORMS } from '@imports';
 @Component({
   selector: 'app-company-form',
   standalone: true,
+  imports: [AddressSubFormComponent, CompanyGeneralFormComponent, FORMS],
+  
   template: `
     <form *ngIf="vm" #form="ngForm" [model]="vm" modelType="company">
-      <mat-card class="company-card">
+      <mat-card>
 
-        <mat-card-header class="my-header">
-          <mat-card-title>Company (Template Driven)</mat-card-title>
+        <mat-card-header>
+          <mat-card-title>Company</mat-card-title>
         </mat-card-header>
 
         <mat-card-content>
@@ -39,8 +41,6 @@ import { FORMS } from '@imports';
       </mat-card>
     </form>
   `,
-  styleUrls: ['./company-form.component.scss'],
-  imports: [AddressSubFormComponent, CompanyGeneralFormComponent, FORMS]
 })
 export class CompanyFormComponent implements OnInit {
   constructor(
@@ -48,7 +48,7 @@ export class CompanyFormComponent implements OnInit {
     private demoService: CompanyFormValidationDemo,
   ) { }
 
-  vm?: Partial<Company>;
+  vm?: Company;
 
   canLeave() {
     return this.save();
@@ -65,7 +65,7 @@ export class CompanyFormComponent implements OnInit {
   private save() {
     const { company } = this.dataService.cacheNow();
     if (areDifferent(company, this.vm)) {
-      return this.dataService.saveCompanyData({company: this.vm as Company});
+      return this.dataService.saveCompanyData({ company: this.vm });
     } else {
       return true; // no change
     }

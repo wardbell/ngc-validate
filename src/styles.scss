@@ -28,6 +28,21 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
   margin: 0;
 }
 
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.col {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.col:last-child {
+  margin-right: 0;
+}
+
+
 .full-width {
   width: 100%;
 }
@@ -35,6 +50,23 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 .short-width {
   min-width: 5rem;
   width: 22%;
+}
+
+mat-card {
+  margin: 1rem auto;
+  max-width: 100rem;
+  min-width: 10rem;
+  width: 95%;
+}
+
+mat-card-header {
+  margin-left: -16px;
+  margin-bottom: 1rem;
+}
+
+.mat-radio-button {
+  display: block;
+  margin: 5px 0;
 }
 
 @keyframes blink {

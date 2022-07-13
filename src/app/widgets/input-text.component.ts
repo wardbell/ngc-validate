@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, ElementRef, EventEmitter, Input, OnInit, Optional, Output, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, EventEmitter, Input, OnInit, Optional, Output, ViewChild, HostBinding } from '@angular/core';
 import { FormControl, NgModel, Validators } from '@angular/forms';
 
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
@@ -12,6 +12,9 @@ import { InputErrorComponent } from './input-error.component';
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'input-text',
   standalone: true,
+  imports: [FORMS, InputErrorComponent],
+  viewProviders: [formContainerViewProvider],
+  
   template: `
   <mat-form-field [ngClass]="className">
     <mat-label *ngIf="label">{{label}}</mat-label>
@@ -31,11 +34,9 @@ import { InputErrorComponent } from './input-error.component';
     <input-error [control]="ngModel.control"></input-error>
 
   `,
-  styles: ['.full-width { width: 100%; }'],
-  viewProviders: [formContainerViewProvider],
-  imports: [FORMS, InputErrorComponent],
 })
 export class InputTextComponent implements OnInit, AfterViewInit {
+  @HostBinding('class') get klass() { return this.className; }
   @Input() context?: ValidationContext;
   @Input()
   get disabled(): boolean { return this._disabled; };
@@ -69,7 +70,8 @@ export class InputTextComponent implements OnInit, AfterViewInit {
     @Optional() private formValidation: FormValidationModelDirective,
     private hostElRef: ElementRef
   ) {
-    this.className = this.hostEl.className;
+    // Apply the class attribute on the host; if none, apply app standard CSS classes
+    this.className = this.hostEl.className || "col full-width" ;
   }
 
   ngOnInit(): void {

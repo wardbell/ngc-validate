@@ -8,19 +8,17 @@ import { InputTextComponent } from '@app/widgets';
 @Component({
   selector: 'app-company-general-sub-form',
   standalone: true,
+  imports: [FORMS],
+  viewProviders: [formContainerViewProvider],
+
   template: `
-    <div *ngIf="vm">
-      <div class="row">
-        <input-text name="legalName" placeholder="Legal Name" class="col full-width" #legalName></input-text>
-      </div>
-      <div class="row">
-        <input-text name="fein" placeholder="Federal Tax Number" class="col short-width" (changed)="feinChanged($event)"></input-text>
-      </div>
+    <div class="row">
+      <input-text name="legalName" placeholder="Legal Name" #legalName></input-text>
+    </div>
+    <div class="row">
+      <input-text name="fein" placeholder="Federal Tax Number" class="col short-width" (changed)="feinChanged($event)"></input-text>
     </div>
   `,
-  styleUrls: ['./company-form.component.scss'],
-  viewProviders: [formContainerViewProvider],
-  imports: [FORMS]
 })
 export class CompanyGeneralFormComponent{
   @Input() vm?: Partial<Company>;
@@ -39,7 +37,7 @@ export class CompanyGeneralFormComponent{
     const control = this.legalNameComponent.control;
     control?.markAsTouched(); // ensure display
     setTimeout(() => {
-      // wait for ngModel to update the model, then re-validate.
+      // wait one tick for ngModel to update the model, then re-validate.
       control?.updateValueAndValidity();
     });
   }

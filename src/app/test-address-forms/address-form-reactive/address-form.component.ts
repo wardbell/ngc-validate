@@ -18,7 +18,6 @@ import { UsStates } from '@model';
     MatButtonModule, MatCardModule, MatInputModule, MatRadioModule, MatSelectModule,
     ReactiveFormsModule
   ],
-  styleUrls: ['./address-form.component.scss']
 })
 export class AddressFormComponent {
   addressForm = this.fb.group({
@@ -37,7 +36,7 @@ export class AddressFormComponent {
 
   constructor(private fb: FormBuilder) {
   }
-  
+
   /** DEMO: validate the address reactive form and display aspects of it in the browser console */
   showValidationState(): void {
     console.groupCollapsed('Address Reactive Form Validation State');

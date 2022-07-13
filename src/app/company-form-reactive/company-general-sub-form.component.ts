@@ -22,7 +22,6 @@ import { REACTIVE_FORMS } from '@imports';
     </div>
   </div>
   `,
-  styleUrls: ['./company-form.component.scss'],
   viewProviders: [formContainerViewProvider],
   imports: [REACTIVE_FORMS]
 })

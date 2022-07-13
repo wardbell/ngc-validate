@@ -11,9 +11,9 @@ import { FORMS } from '@imports';
   selector: 'app-settings',
   standalone: true,
   template: `
-    <mat-card class="settings-card">
+    <mat-card>
 
-      <mat-card-header class="my-header">
+      <mat-card-header>
         <mat-card-title>Settings</mat-card-title>
       </mat-card-header>
 
@@ -39,7 +39,6 @@ import { FORMS } from '@imports';
       </mat-card-content>
     </mat-card>
   `,
-  styleUrls: ['./settings.component.scss'],
   imports: [FORMS, MatListModule]
 })
 export class SettingsComponent implements OnInit {

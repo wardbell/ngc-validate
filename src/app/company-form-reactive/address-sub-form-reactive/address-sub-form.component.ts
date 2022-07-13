@@ -19,7 +19,6 @@ interface Vm {
   selector: 'app-address-sub-form',
   standalone: true,
   templateUrl: './address-sub-form.component.html',
-  styleUrls: ['./address-sub-form.component.scss'],
   imports: [REACTIVE_FORMS],
 })
 export class AddressSubFormComponent implements OnInit {

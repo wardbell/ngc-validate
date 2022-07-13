@@ -12,7 +12,6 @@ const states = toSelectOptions(UsStates, 'name', 'abbreviation');
   selector: 'app-address-sub-form',
   standalone: true,
   templateUrl: './address-sub-form.component.html',
-  styleUrls: ['./address-sub-form.component.scss'],
   viewProviders: [formContainerViewProvider],
   imports: [FORMS],
 })

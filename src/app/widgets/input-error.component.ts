@@ -8,13 +8,14 @@ import { Subscription } from 'rxjs';
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'input-error',
   standalone: true,
+  imports: [CommonModule, MatInputModule],
+
   template: `
     <div *ngIf="show" class="full-width">
       <span *ngIf="error" class="error">{{ error }}</span>
       <span *ngIf="pending" class="pending">validating...</span>
     </div>
   `,
-  imports: [CommonModule, MatInputModule],
 })
 export class InputErrorComponent implements OnDestroy, OnInit {
   @Input() control?: Partial<FormControl>

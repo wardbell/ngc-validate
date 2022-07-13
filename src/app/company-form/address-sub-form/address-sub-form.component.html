@@ -1,13 +1,13 @@
-<div *ngIf="vm" [ngModelGroup]="ngModelGroupName" [model]="vm" modelType="address">
+<div [ngModelGroup]="ngModelGroupName" [model]="vm" modelType="address">
   <div class="row">
-    <input-text field="street" placeholder="Street" class="col full-width"></input-text>
-    <input-text field="street2" placeholder="Street 2 (unit/apt)" class="col full-width"></input-text>
+    <input-text field="street" placeholder="Street"></input-text>
+    <input-text field="street2" placeholder="Street 2 (unit/apt)"></input-text>
   </div>
   <div class="row">
-    <input-text field="city" placeholder="City" class="col full-width"></input-text>
-    <input-select field="state" label="State" [options]="states" placeholderOption="Choose a state ..." class="col full-width"></input-select>
+    <input-text field="city" placeholder="City"></input-text>
+    <input-select field="state" label="State" [options]="states" placeholderOption="Choose a state ..."></input-select>
   </div>
   <div class="row">
-    <input-text field="postalCode" placeholder="Postal Code"></input-text>
+    <input-text field="postalCode" placeholder="Postal Code" class="col short-width"></input-text>
   </div>
 </div>

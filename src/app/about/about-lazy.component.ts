@@ -6,6 +6,7 @@ import { COMMON } from "@imports";
   selector: 'app-about-lazy',
   standalone: true,
   imports: [COMMON],
+  
   template: `<h2 *ngIf="visible">{{ title }}</h2>`
 })
 export class AboutLazyComponent {
