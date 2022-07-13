@@ -24,6 +24,7 @@ interface Vm {
 })
 export class AddressSubFormComponent implements OnInit {
   /** Name for the formGroup when added to the parent form. Defaults to 'address'. */
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('name') formGroupName = 'address';
 
   @Input() address?: Address;

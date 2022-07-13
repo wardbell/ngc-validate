@@ -9,6 +9,7 @@ import { FormValidationModelDirective, ValidationContext } from '@validation';
 import { InputErrorComponent } from './input-error.component';
 
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'input-text',
   standalone: true,
   template: `
@@ -52,7 +53,7 @@ export class InputTextComponent implements OnInit, AfterViewInit {
   @Input() updateOn?: FormHooks;
 
   /** Emit when the field value changes. */
-  @Output() onChange = new EventEmitter<string | null>();
+  @Output() changed = new EventEmitter<string | null>();
 
   @ViewChild('input') inputElRef?: ElementRef;
   @ViewChild('ngModel') ngModel?: NgModel;
@@ -125,6 +126,6 @@ export class InputTextComponent implements OnInit, AfterViewInit {
     if (this.model && this.field) {
       this.model[this.field] = this.currentValue;
     }
-    this.onChange.emit(this.currentValue);
+    this.changed.emit(this.currentValue);
   }
 }

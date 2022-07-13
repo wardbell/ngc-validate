@@ -8,6 +8,7 @@ import { FormHooks, nameCounter, NgModelOptions, SelectOption, trim } from '@app
 import { FormValidationModelDirective, ValidationContext } from '@validation';
 
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'input-select',
   standalone: true,
   template: `
@@ -57,7 +58,7 @@ export class InputSelectComponent implements OnInit, AfterViewInit {
   @Input() updateOn?: FormHooks;
 
   /** Emit when the field value changes. */
-  @Output() onChange = new EventEmitter<string | null>();
+  @Output() changed = new EventEmitter<string | null>();
 
   @ViewChild('select') selectElRef?: ElementRef;
   @ViewChild('ngModel') ngModel?: NgModel;
@@ -119,6 +120,6 @@ export class InputSelectComponent implements OnInit, AfterViewInit {
     if (this.model && this.field) {
       this.model[this.field] = this.currentValue;
     }
-    this.onChange.emit(this.currentValue);
+    this.changed.emit(this.currentValue);
   }
 }

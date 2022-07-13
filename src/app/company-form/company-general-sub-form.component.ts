@@ -14,7 +14,7 @@ import { InputTextComponent } from '@app/widgets';
         <input-text name="legalName" placeholder="Legal Name" class="col full-width" #legalName></input-text>
       </div>
       <div class="row">
-        <input-text name="fein" placeholder="Federal Tax Number" class="col short-width" (onChange)="feinChanged($event)"></input-text>
+        <input-text name="fein" placeholder="Federal Tax Number" class="col short-width" (changed)="feinChanged($event)"></input-text>
       </div>
     </div>
   `,

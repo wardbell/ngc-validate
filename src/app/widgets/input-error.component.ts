@@ -5,6 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';
 
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'input-error',
   standalone: true,
   template: `

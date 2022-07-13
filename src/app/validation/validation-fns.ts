@@ -3,15 +3,6 @@ import { AbstractControl, AsyncValidatorFn, FormControl, ValidationErrors, Valid
 import { Indexable } from '@utils';
 import { ValidationContext, ValidationSuite } from './interfaces';
 
-// #region Extend vest.enforce with external validation rules from the validator.js library
-// https://vestjs.dev/docs/enforce/consuming_external_rules
-import { enforce } from 'vest';
-import isEmail from 'validator/es/lib/isEmail';
-import isPostalCode from 'validator/es/lib/isPostalCode';
-
-enforce.extend({ isEmail, isPostalCode });
-// #endregion Extend vest.enforce with external validation rules from the validator.js library
-
 /** Create and add Angular sync Validators to all the given form controls
  * @param controlGroup an object whose properties are the field names and values are FormControls.
  * ex: an Angular `FormGroup`. Note can only be one level deep and not include FormArrays.

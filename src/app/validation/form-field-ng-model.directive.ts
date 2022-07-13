@@ -14,25 +14,26 @@ import { vestAsyncFieldValidator, vestSyncFieldValidator } from './validation-fn
  * Skipped if element with `[ngModel]` also has `no-val` attribute
 */
 @Directive({
+  // eslint-disable-next-line @angular-eslint/directive-selector
   selector: '[ngModel]:not([no-val])',
   standalone: true,
 })
 export class FormFieldNgModelDirective implements OnChanges {
 
-  /** Context that validators may reference for external information.
-   * If not specified, try to pick up from parent FormValidationModelDirective.
-   * Blended with global ValidationContext (if it exists).
+  /** Context that validators may reference for external information and services.
+   * Blended with global ValidationContext and parent FormValidationModelDirective context.
    * Optional.
    */
   @Input() context?: ValidationContext;
 
-  /** Field (property) of the model to validate.
+  /** Field name to validate. Should be a property of the model.
    * If not specified, will use the NgModel control's name (value of the `name` attribute).
    */
   @Input() field?: string;
 
-  /** Group of tests within the validation suite. Only process tests in that group.
+  /** Group name of tests within the validation suite.
    * If not specified, try to pick up from parent FormValidationModelDirective.
+   * If there is a group name, only process tests in that group.
    * Optional.
    */
   @Input() group?: string;
@@ -51,27 +52,25 @@ export class FormFieldNgModelDirective implements OnChanges {
 
   constructor(
     @Optional() private formValidation: FormValidationModelDirective,
-    @Optional() @Inject(VALIDATION_CONTEXT) private globalContext: ValidationContext,
     @Optional() @Inject(ASYNC_VALIDATION_SUITE_FACTORIES) private asyncValidationSuiteFactories: AsyncValidationSuiteFactories,
     @Optional() @Inject(SYNC_VALIDATION_SUITES) private syncValidationSuites: SyncValidationSuites,
+    @Optional() @Inject(VALIDATION_CONTEXT) private globalContext: ValidationContext,
     /** Form control for the ngModel directive */
     private ngModel: NgModel,
-  ) {
-    // console.log('ngModel', ngModel);
-    // console.log('ngModel.control.validator', this.ngModel.control.validator);
-  }
+  ) { }
 
   ngOnChanges(): void {
-    // Blend explicit context (if provided) with global context
-    const context = { ...this.globalContext, ...(this.context || this.formValidation?.context) };
-    const field = this.field || this.ngModel.name;
-    const group = this.group || this.formValidation?.group;
-    const model = this.model ?? this.formValidation?.model;
+    const field = this.field || this.ngModel.name; // if no field name, assume the name of the control is the field name.
     const modelType = this.modelType || this.formValidation?.modelType;
 
     if (!field || !modelType) {
       return; // Must have a minimum of the field and modelType to add a validator
     }
+
+    // Blend contexts with more local context (ex: this.context) taking precedence.
+    const context = { ...this.globalContext, ...this.formValidation?.context, ...this.context };
+    const group = this.group || this.formValidation?.group;
+    const model = this.model ?? this.formValidation?.model;
 
     const suite = this.syncValidationSuites[modelType];
     if (!!suite) {
