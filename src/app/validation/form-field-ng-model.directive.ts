@@ -58,6 +58,10 @@ export class FormFieldNgModelDirective implements OnChanges {
   ) { }
 
   ngOnChanges(): void {
+    if (!this.syncValidationSuites || !this.asyncValidationSuiteFactories) {
+      throw 'FormFieldNgModelDirective: cannot validate because there are no registered validation suites.';
+    }
+
     const field = this.field || this.ngModel.name; // if no field name, assume the name of the control is the field name.
     const model = this.model ?? this.formValidation?.model;
     const modelType = this.modelType || this.formValidation?.modelType;

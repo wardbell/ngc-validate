@@ -1,14 +1,13 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, ValidationErrors } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'input-error',
   standalone: true,
-  imports: [CommonModule, MatInputModule],
+  imports: [CommonModule],
 
   template: `
     <div *ngIf="show" class="full-width">

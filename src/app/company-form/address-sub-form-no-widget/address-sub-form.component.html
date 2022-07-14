@@ -2,7 +2,7 @@
   <div class="row">
     <mat-form-field class="col full-width">
       <input matInput name="street" placeholder="Street" [(ngModel)]="vm.street" #street="ngModel">
-      <mat-error *ngIf="street.errors" class="full-width">
+      <mat-error *ngIf="street.errors">
         {{ street.errors['error'] }}
       </mat-error>
     </mat-form-field>
@@ -15,7 +15,7 @@
   <div class="row">
     <mat-form-field class="col full-width">
       <input matInput name="city" placeholder="City" [(ngModel)]="vm.city" #city="ngModel">
-      <mat-error *ngIf="city.errors" class="full-width">
+      <mat-error *ngIf="city.errors">
         {{ city.errors['error'] }}
       </mat-error>
     </mat-form-field>
@@ -26,16 +26,16 @@
           {{ state.name }}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="state.errors" class="full-width">
+      <mat-error *ngIf="state.errors">
         {{ state.errors['error'] }}
       </mat-error>
     </mat-form-field>
   </div>
 
   <div class="row">
-    <mat-form-field>
+    <mat-form-field class="col mid-width">
       <input matInput name="postalCode" placeholder="Postal Code" [(ngModel)]="vm.postalCode" #postalCode="ngModel">
-      <mat-error *ngIf="postalCode.errors" class="full-width">
+      <mat-error *ngIf="postalCode.errors">
         {{ postalCode.errors['error'] }}
       </mat-error>
     </mat-form-field>

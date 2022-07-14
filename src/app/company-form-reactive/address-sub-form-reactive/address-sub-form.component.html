@@ -2,7 +2,7 @@
   <div class="row">
     <mat-form-field class="col full-width">
       <input matInput placeholder="Street" formControlName="street">
-      <mat-error *ngIf="addressForm.controls.street.errors" class="full-width">
+      <mat-error *ngIf="addressForm.controls.street.errors">
         {{ addressForm.controls.street.errors['error'] }}
       </mat-error>
     </mat-form-field>
@@ -15,7 +15,7 @@
   <div class="row">
     <mat-form-field class="col full-width">
       <input matInput placeholder="City" formControlName="city">
-      <mat-error *ngIf="addressForm.controls.city.errors" class="full-width">
+      <mat-error *ngIf="addressForm.controls.city.errors">
         {{ addressForm.controls.city.errors['error'] }}
       </mat-error>
     </mat-form-field>
@@ -26,16 +26,16 @@
           {{ state.name }}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="addressForm.controls.state.errors" class="full-width">
+      <mat-error *ngIf="addressForm.controls.state.errors">
         {{ addressForm.controls.state.errors['error'] }}
       </mat-error>
     </mat-form-field>
   </div>
 
   <div class="row">
-      <mat-form-field class="col short-width">
+      <mat-form-field class="col mid-width">
         <input matInput placeholder="Postal Code" formControlName="postalCode">
-        <mat-error *ngIf="addressForm.controls.postalCode.errors" class="full-width">
+        <mat-error *ngIf="addressForm.controls.postalCode.errors">
           {{ addressForm.controls.postalCode.errors['error'] }}
         </mat-error>
       </mat-form-field>

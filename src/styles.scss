@@ -52,6 +52,12 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
   width: 22%;
 }
 
+.mid-width {
+  min-width: 5rem;
+  max-width: 20rem;
+  width: 50%;
+}
+
 mat-card {
   margin: 1rem auto;
   max-width: 100rem;

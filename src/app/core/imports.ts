@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 
-import { InputSelectComponent, InputTextComponent } from '@app/widgets';
+import { InputErrorComponent, InputSelectComponent, InputTextComponent } from '@app/widgets';
 import { FormFieldNgModelDirective } from '@validation/form-field-ng-model.directive';
 import { FormValidationModelDirective } from '@validation/form-validation-model.directive';
 
@@ -19,7 +19,7 @@ export const COMMON = [CommonModule];
 export const FORMS = [
   CommonModule,
   FormFieldNgModelDirective, FormValidationModelDirective,
-  InputSelectComponent, InputTextComponent,
+  InputErrorComponent, InputSelectComponent, InputTextComponent,
   MatButtonModule, MatCardModule, MatInputModule, MatRadioModule, MatSelectModule,
   FormsModule,
 ];

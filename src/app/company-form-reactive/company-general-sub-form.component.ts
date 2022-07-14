@@ -15,8 +15,16 @@ import { REACTIVE_FORMS } from '@imports';
     <div class="row">
       <mat-form-field class="col full-width">
         <input matInput placeholder="Legal Name" formControlName="legalName" required>
-        <mat-error *ngIf="generalForm.controls.legalName.errors" class="full-width">
+        <mat-error *ngIf="generalForm.controls.legalName.errors">
           {{ generalForm.controls.legalName.errors['error'] }}
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <mat-form-field class="col mid-width">
+        <input matInput placeholder="fein" formControlName="fein" required>
+        <mat-error *ngIf="generalForm.controls.fein.errors">
+          {{ generalForm.controls.fein.errors['error'] }}
         </mat-error>
       </mat-form-field>
     </div>
@@ -30,6 +38,7 @@ export class CompanyGeneralFormComponent implements OnInit {
 
   protected generalForm = this.fb.group({
     legalName: '',
+    fein: '',
   });
   constructor(private fb: FormBuilder, private parent: NgForm) {
     addValidatorsToControls(this.generalForm.controls, companySyncValidationSuite);
@@ -44,7 +53,8 @@ export class CompanyGeneralFormComponent implements OnInit {
       if (this.company) {
         // Populate controls
         this.generalForm.setValue({
-          legalName: this.company.legalName || ''
+          legalName: this.company.legalName || '',
+          fein: this.company.fein || '',
         });
       }
     }, 1);

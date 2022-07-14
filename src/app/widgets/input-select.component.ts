@@ -32,11 +32,10 @@ import { FormValidationModelDirective, ValidationContext } from '@validation';
         <option *ngFor="let option of options" [value]="option.value" [disabled]="option.disabled">
           {{ option.name }}
         </option>
-    </select >
-    <mat-error *ngIf="ngModel.errors" class="full-width">
-      {{ ngModel.errors['error'] }}
-    </mat-error>
+    </select>
   </mat-form-field>
+  <input-error [control]="ngModel.control"></input-error>
+
   `,
 })
 export class InputSelectComponent implements OnInit, AfterViewInit {

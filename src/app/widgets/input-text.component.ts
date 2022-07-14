@@ -6,15 +6,14 @@ import { formContainerViewProvider, Indexable } from '@core';
 import { FormHooks, nameCounter, NgModelOptions, trim } from '@app/widgets/interfaces';
 import { FORMS } from '@imports';
 import { FormValidationModelDirective, ValidationContext } from '@validation';
-import { InputErrorComponent } from './input-error.component';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'input-text',
   standalone: true,
-  imports: [FORMS, InputErrorComponent],
+  imports: [FORMS],
   viewProviders: [formContainerViewProvider],
-  
+
   template: `
   <mat-form-field [ngClass]="className">
     <mat-label *ngIf="label">{{label}}</mat-label>
@@ -30,8 +29,8 @@ import { InputErrorComponent } from './input-error.component';
       (keyup.esc)="escaped()"
       (blur)="onBlur()"
       #input #ngModel="ngModel">
-    </mat-form-field>
-    <input-error [control]="ngModel.control"></input-error>
+  </mat-form-field>
+  <input-error [control]="ngModel.control"></input-error>
 
   `,
 })
