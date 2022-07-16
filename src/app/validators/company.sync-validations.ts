@@ -7,7 +7,8 @@ import { ValidationContext, ValidationSuite, ValidationSuiteFn } from '@validati
 
 /** Company Synchronous Validation Suite */
 export const companySyncValidationSuite: ValidationSuite =
-  create((model: Partial<Company>, field?: string, groupName?: string, context?: ValidationContext) => {
+  create('CompanySyncValidationSuite',
+    (model: Partial<Company>, field?: string, groupName?: string, context?: ValidationContext) => {
     only(field);
     group('company', () => companySyncValidations(model, field, groupName, context));
     group('workAddress', () => addressSyncValidations(model.workAddress!, field, groupName, context));

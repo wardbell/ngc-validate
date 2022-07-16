@@ -4,7 +4,8 @@ import { Address, UsStates } from '@model';
 import { ValidationContext, ValidationSuite, ValidationSuiteFn } from '@validation';
 
 export const addressSyncValidationSuite: ValidationSuite =
-  create((model: Partial<Address>, field?: string, groupName?: string, context?: ValidationContext) => {
+  create('AddressSyncValidationSuite',
+    (model: Partial<Address>, field?: string, groupName?: string, context?: ValidationContext) => {
     only(field);
     addressSyncValidations(model, field, groupName, context);
   });

@@ -36,5 +36,5 @@ export class FeinValidationService {
 
 /** Return true if the fein value is a well-formed FEIN number although it might not be a real FEIN. */
 export function isGoodFein(fein?: string): boolean {
-  return fein ? /\d{2}-\d{7}/.test(fein) : false;
+  return fein ? /^\d{2}-\d{7}$/.test(fein) : false;
 }

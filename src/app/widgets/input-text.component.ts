@@ -1,17 +1,19 @@
 import { Component, AfterViewInit, ElementRef, EventEmitter, Input, OnInit, Optional, Output, ViewChild, HostBinding } from '@angular/core';
-import { FormControl, NgModel, Validators } from '@angular/forms';
-
+import { CommonModule } from '@angular/common';
+import { FormControl, FormsModule, NgModel, Validators } from '@angular/forms';
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
+import { MatInputModule } from '@angular/material/input';
+
 import { formContainerViewProvider, Indexable } from '@core';
 import { FormHooks, nameCounter, NgModelOptions, trim } from '@app/widgets/interfaces';
-import { FORMS } from '@imports';
 import { FormValidationModelDirective, ValidationContext } from '@validation';
-
+import { InputErrorComponent } from '@app/widgets';
+import { FormFieldNgModelDirective } from '@validation/form-field-ng-model.directive';
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'input-text',
   standalone: true,
-  imports: [FORMS],
+  imports: [CommonModule, FormFieldNgModelDirective, FormsModule, InputErrorComponent, MatInputModule],
   viewProviders: [formContainerViewProvider],
 
   template: `
@@ -31,7 +33,6 @@ import { FormValidationModelDirective, ValidationContext } from '@validation';
       #input #ngModel="ngModel">
   </mat-form-field>
   <input-error [control]="ngModel.control"></input-error>
-
   `,
 })
 export class InputTextComponent implements OnInit, AfterViewInit {
@@ -74,7 +75,7 @@ export class InputTextComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.model = this.model ?? this.formValidation.model;
+    this.model = this.model ?? this.formValidation?.model;
     this.field = this.field || this.name;
     this.name = this.name || `${(this.field ?? '')}$${nameCounter.next}`;
     this.originalValue = trim(this.model ? this.model[this.field!] : null);

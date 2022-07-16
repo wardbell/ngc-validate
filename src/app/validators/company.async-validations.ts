@@ -6,7 +6,8 @@ import { FeinValidationResponse, isGoodFein } from '@services/fein-validation.se
 import { ValidationContext, ValidationSuite, ValidationSuiteFn } from '@validation';
 
 export function createCompanyAsyncValidationSuite() {
-  return create((model: Partial<Company>, field?: string, groupName?: string, context?: ValidationContext) => {
+  return create('CompanyAsyncValidationSuite',
+    (model: Partial<Company>, field?: string, groupName?: string, context?: ValidationContext) => {
     only(field);
     group('company', () => companyAsyncValidations(model, field, groupName, context));
   }) as ValidationSuite;

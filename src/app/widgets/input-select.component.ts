@@ -1,17 +1,20 @@
 import { Component, AfterViewInit, ElementRef, EventEmitter, HostBinding, Input, OnInit, Optional, Output, ViewChild } from '@angular/core';
-import { NgModel, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { FormsModule, NgModel, Validators } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import { formContainerViewProvider, Indexable } from '@core';
-import { FORMS } from '@imports';
 import { FormHooks, nameCounter, NgModelOptions, SelectOption, trim } from '@app/widgets/interfaces';
 import { FormValidationModelDirective, ValidationContext } from '@validation';
+import { InputErrorComponent } from '@app/widgets';
+import { FormFieldNgModelDirective } from '@validation/form-field-ng-model.directive';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'input-select',
   standalone: true,
-  imports: [FORMS],
+  imports: [CommonModule, FormsModule, InputErrorComponent, MatInputModule, FormFieldNgModelDirective],
   viewProviders: [formContainerViewProvider],
 
   template: `
@@ -35,7 +38,6 @@ import { FormValidationModelDirective, ValidationContext } from '@validation';
     </select>
   </mat-form-field>
   <input-error [control]="ngModel.control"></input-error>
-
   `,
 })
 export class InputSelectComponent implements OnInit, AfterViewInit {
@@ -78,7 +80,7 @@ export class InputSelectComponent implements OnInit, AfterViewInit {
     this.className = this.hostEl.className || "col full-width" ;  }
 
   ngOnInit(): void {
-    this.model = this.model ?? this.formValidation.model;
+    this.model = this.model ?? this.formValidation?.model;
     this.field = this.field || this.name;
     this.name = this.name || `${(this.field || '')}$${nameCounter.next}`;
     this.originalValue = trim(this.model ? this.model[this.field!] : null);
