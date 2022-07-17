@@ -1,7 +1,8 @@
-import { Directive, Inject, Input, OnChanges, Optional } from '@angular/core';
+import { Directive, Inject, Input, OnChanges, OnDestroy, Optional } from '@angular/core';
 import { NgModel } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
-import { FormValidationModelDirective } from './form-validation-model.directive'
+import { FormValidationScopeDirective } from './form-validation-scope.directive'
 import { Indexable } from '@core';
 import {
   AsyncValidationSuiteFactories, ASYNC_VALIDATION_SUITE_FACTORIES,
@@ -18,7 +19,7 @@ import { vestAsyncFieldValidator, vestSyncFieldValidator } from './validation-fn
   selector: '[ngModel]:not([no-val])',
   standalone: true,
 })
-export class FormFieldNgModelDirective implements OnChanges {
+export class FormFieldNgModelDirective implements OnChanges, OnDestroy {
 
   /** Context that validators may reference for external information and services.
    * Blended with global ValidationContext and parent FormValidationModelDirective context.
@@ -48,37 +49,50 @@ export class FormFieldNgModelDirective implements OnChanges {
    */
   @Input() modelType?: string;
 
+  private scopeSub?: Subscription;
+
   constructor(
-    @Optional() private formValidation: FormValidationModelDirective,
+    @Optional() private formValidationScope: FormValidationScopeDirective,
     @Optional() @Inject(ASYNC_VALIDATION_SUITE_FACTORIES) private asyncValidationSuiteFactories: AsyncValidationSuiteFactories,
     @Optional() @Inject(SYNC_VALIDATION_SUITES) private syncValidationSuites: SyncValidationSuites,
     @Optional() @Inject(VALIDATION_CONTEXT) private globalContext: ValidationContext,
     /** Form control for the ngModel directive */
     private ngModel: NgModel,
-  ) { }
+  ) {
+    if (formValidationScope) {
+      // (re)setup validation if the validation scope was updated.
+      this.scopeSub = this.formValidationScope.changed.subscribe(_ => this.ngOnChanges());
+    }
+  }
 
   ngOnChanges(): void {
     if (!this.syncValidationSuites || !this.asyncValidationSuiteFactories) {
       throw 'FormFieldNgModelDirective: cannot validate because there are no registered validation suites.';
     }
 
+    const ngModelControl = this.ngModel.control;
+
     const field = this.field || this.ngModel.name; // if no field name, assume the name of the control is the field name.
-    const model = this.model ?? this.formValidation?.model;
-    const modelType = this.modelType || this.formValidation?.modelType;
+    const modelType = this.modelType || this.formValidationScope?.modelType;
+
+    const model = this.model ?? this.formValidationScope?.model;
 
     if (!field || !model || !modelType) {
-      return; // Must have the field, model, and modelType to add a validator
+      // Must have the field, model, and modelType to add a validator.
+      ngModelControl._validationMetadata = undefined; // NOT adding validators
+      return;
     }
 
     // Blend contexts with more local context (ex: this.context) taking precedence.
-    const context = { ...this.globalContext, ...this.formValidation?.context, ...this.context };
-    const group = this.group || this.formValidation?.group;
+    const context = { ...this.globalContext, ...this.formValidationScope?.context, ...this.context };
+    const group = this.group || this.formValidationScope?.group;
+    ngModelControl._validationMetadata = { field, modelType };
 
     const suite = this.syncValidationSuites[modelType];
     if (!!suite) {
       const validator = vestSyncFieldValidator(suite, field, model, group, context);
-      this.ngModel.control.clearValidators();
-      this.ngModel.control.addValidators(validator);
+      ngModelControl.clearValidators();
+      ngModelControl.addValidators(validator);
     }
 
     /* Async suite factory creates a vest suite of async validations for the given model type
@@ -93,8 +107,14 @@ export class FormFieldNgModelDirective implements OnChanges {
     if (!!asyncSuiteFactory) {
       const asyncSuite = asyncSuiteFactory();
       const validator = vestAsyncFieldValidator(asyncSuite, field, model, group, context);
-      this.ngModel.control.clearAsyncValidators();
-      this.ngModel.control.addAsyncValidators(validator);
+      ngModelControl.clearAsyncValidators();
+      ngModelControl.addAsyncValidators(validator);
     }
+
+    ngModelControl.updateValueAndValidity();
+  }
+
+  ngOnDestroy(): void {
+    this.scopeSub?.unsubscribe();
   }
 }

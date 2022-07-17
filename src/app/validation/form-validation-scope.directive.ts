@@ -1,10 +1,10 @@
-import { Directive, Input, OnChanges } from '@angular/core';
+import { Directive, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ValidationContext } from './interfaces';
 
 import { Indexable } from '@utils';
 
-/** Set defaults validation model variables, scoped to a form, ngModelGroup, or an element with `val-model` attribute.
+/** Set the validation scope variables on a form, ngModelGroup, or an element with a `val-model` attribute.
  * Must specify model and modelType to match this directive.
  */
 @Directive({
@@ -12,7 +12,7 @@ import { Indexable } from '@utils';
   selector: 'form[model][modelType]:not([ngNoForm]):not([formGroup]),ng-form[model][modelType],[ngForm][model][modelType],[ngModelGroup][model][modelType],[val-model]',
   standalone: true,
 })
-export class FormValidationModelDirective implements OnChanges {
+export class FormValidationScopeDirective implements OnChanges {
   /** data model whose properties will be validated. Required. */
   @Input() model: Indexable | undefined;
 
@@ -25,12 +25,12 @@ export class FormValidationModelDirective implements OnChanges {
   /** Context that validators may reference for external information and services. */
   @Input() context?: ValidationContext;
 
-  private modelChange = new Subject<any>();
+  private changeSubject = new Subject<any>();
 
-  /** Observable that emits when any of the validation model inputs changed. */
-  modelChanged = this.modelChange.asObservable();
+  /** Observable that emits when any of the validation scope inputs changed. */
+  changed = this.changeSubject.asObservable();
 
-  ngOnChanges(): void {
-    this.modelChange.next(null);
+  ngOnChanges(_changes: SimpleChanges): void {
+    this.changeSubject.next(null);
   }
 }

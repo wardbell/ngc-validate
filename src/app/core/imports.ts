@@ -10,7 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 
 import { InputErrorComponent, InputSelectComponent, InputTextComponent } from '@app/widgets';
 import { FormFieldNgModelDirective } from '@validation/form-field-ng-model.directive';
-import { FormValidationModelDirective } from '@validation/form-validation-model.directive';
+import { FormValidationScopeDirective } from '@app/validation/form-validation-scope.directive';
 
 /** Imports for components referencing just the Common Module */
 export const COMMON = [CommonModule];
@@ -18,7 +18,7 @@ export const COMMON = [CommonModule];
 /** Standard imports for (almost) every Template-Driven forms component in this app. */
 export const FORMS = [
   CommonModule,
-  FormFieldNgModelDirective, FormValidationModelDirective,
+  FormFieldNgModelDirective, FormValidationScopeDirective,
   InputErrorComponent, InputSelectComponent, InputTextComponent,
   MatButtonModule, MatCardModule, MatInputModule, MatRadioModule, MatSelectModule,
   FormsModule,

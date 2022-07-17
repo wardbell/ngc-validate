@@ -1,12 +1,13 @@
-import { Component, AfterViewInit, ElementRef, EventEmitter, HostBinding, Input, OnInit, Optional, Output, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, EventEmitter, HostBinding, Input, OnChanges, OnDestroy, OnInit, Optional, Output, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgModel, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { Subscription } from 'rxjs';
 
 import { BooleanInput, coerceBooleanProperty } from '@angular/cdk/coercion';
 import { formContainerViewProvider, Indexable } from '@core';
 import { FormHooks, nameCounter, NgModelOptions, SelectOption, trim } from '@app/widgets/interfaces';
-import { FormValidationModelDirective, ValidationContext } from '@validation';
+import { FormValidationScopeDirective, ValidationContext } from '@validation';
 import { InputErrorComponent } from '@app/widgets';
 import { FormFieldNgModelDirective } from '@validation/form-field-ng-model.directive';
 
@@ -40,7 +41,7 @@ import { FormFieldNgModelDirective } from '@validation/form-field-ng-model.direc
   <input-error [control]="ngModel.control"></input-error>
   `,
 })
-export class InputSelectComponent implements OnInit, AfterViewInit {
+export class InputSelectComponent implements AfterViewInit, OnInit, OnChanges, OnDestroy  {
   @HostBinding('class') get klass() { return this.className; }
   @Input() context?: ValidationContext;
   @Input()
@@ -51,7 +52,8 @@ export class InputSelectComponent implements OnInit, AfterViewInit {
   @Input() field?: string;
   @Input() group?: string;
   @Input() label?: string;
-  @Input() model?: Indexable;
+  // eslint-disable-next-line @angular-eslint/no-input-rename
+  @Input('model') inputModel?: Indexable;
   @Input() modelType?: string;
   @Input() name?: string;
   @Input() options: SelectOption[] = [];
@@ -67,24 +69,44 @@ export class InputSelectComponent implements OnInit, AfterViewInit {
   @ViewChild('ngModel') ngModel?: NgModel;
 
   protected className: string;
-  private currentValue: any | null = null;
   private hostEl: HTMLInputElement = this.hostElRef.nativeElement;
+  model?: Indexable;
   protected ngModelOptions?: NgModelOptions;
-  private originalValue: any | null = null;
+  originalValue: any | null = null;
+  scopeSub?: Subscription;
 
+  get value() {
+    return this.model![this.field!];
+  }
+
+  set value(val: any | null) {
+    if (this.field) {
+      this.model![this.field] = val;
+    }
+    this.changed.emit(val);
+  }
   constructor(
-    @Optional() private formValidation: FormValidationModelDirective,
+    @Optional() private formValidationScope: FormValidationScopeDirective,
     private hostElRef: ElementRef
   ) {
     // Apply the class attribute on the host; if none, apply app standard CSS classes
-    this.className = this.hostEl.className || "col full-width" ;  }
+    this.className = this.hostEl.className || "col full-width";
+  }
+
+  ngOnChanges(): void {
+    // only care about inputModel and updateOn changes; changes to other input vars are ignored.
+    // inputModel trumps validation scope model
+    this.model = this.inputModel ?? this.formValidationScope?.model ?? {};
+    if (this.updateOn) {
+      this.ngModelOptions = { updateOn: this.updateOn };
+    }
+  }
 
   ngOnInit(): void {
-    this.model = this.model ?? this.formValidation?.model;
+    this.model = this.model ?? this.formValidationScope?.model ?? {};
     this.field = this.field || this.name;
     this.name = this.name || `${(this.field || '')}$${nameCounter.next}`;
     this.originalValue = trim(this.model ? this.model[this.field!] : null);
-    this.currentValue = this.originalValue;
     if (this.updateOn) {
       this.ngModelOptions = { updateOn: this.updateOn };
     }
@@ -103,6 +125,10 @@ export class InputSelectComponent implements OnInit, AfterViewInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.scopeSub?.unsubscribe();
+  }
+
   /** User pressed escape. Restores original value */
   protected escaped() {
     const currentValue = this.selectElRef!.nativeElement.value;
@@ -113,17 +139,5 @@ export class InputSelectComponent implements OnInit, AfterViewInit {
 
   get showPlaceholderOption() {
     return this.placeholderOption && (this.value === '' || this.value == null);
-  }
-
-  protected get value(): any | null {
-    return this.currentValue;
-  }
-
-  protected set value(value: any | null) {
-    this.currentValue = value;
-    if (this.model && this.field) {
-      this.model[this.field] = this.currentValue;
-    }
-    this.changed.emit(this.currentValue);
   }
 }

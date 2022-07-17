@@ -60,7 +60,7 @@ export const customVestSuiteResultMatchers: CustomMatcherFactories = {
   }
 };
 
-export class FakeFeinValidationService {
+export class TestFeinValidationService {
   /** Check if an FEIN/Legal Name combination is valid
    * @returns Promise of the faked service response.
    */
@@ -81,5 +81,5 @@ export class FakeFeinValidationService {
 }
 
 export const testAppContext: AppValidationContext = {
-  feinValidationService: new FakeFeinValidationService() as FeinValidationService,
+  feinValidationService: new TestFeinValidationService() as FeinValidationService,
 }

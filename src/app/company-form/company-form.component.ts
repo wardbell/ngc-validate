@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { filter, take } from 'rxjs/operators';
 
@@ -34,7 +34,7 @@ import { FORMS } from '@imports';
 
           <h2>Work Address</h2>
 
-          <app-address-sub-form [vm]="vm.workAddress" name="workAddress"></app-address-sub-form>
+          <app-address-sub-form [vm]="vm?.workAddress" name="workAddress"></app-address-sub-form>
         </mat-card-content>
 
         <mat-card-actions>
@@ -46,12 +46,15 @@ import { FORMS } from '@imports';
   `,
 })
 export class CompanyFormComponent implements OnInit {
+  /** The NgForm, exposed for testing only. */
+  @ViewChild('form') form!: NgForm;
+
   constructor(
     private dataService: DataService,
     private demoService: CompanyFormValidationDemo,
   ) { }
 
-  vm?: Company;
+  vm?: Partial<Company>;
 
   canLeave() {
     return this.save();
@@ -67,8 +70,9 @@ export class CompanyFormComponent implements OnInit {
   /** Save company changes if there are any. */
   private save() {
     const { company } = this.dataService.cacheNow();
+    const newCo = { ...company, ...this.vm } as Company;
     if (areDifferent(company, this.vm)) {
-      return this.dataService.saveCompanyData({ company: this.vm });
+      return this.dataService.saveCompanyData({ company: newCo });
     } else {
       return true; // no change
     }
