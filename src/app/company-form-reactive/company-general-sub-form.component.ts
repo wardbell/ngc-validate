@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit, Optional } from '@angular/core';
 import { FormBuilder, NgForm } from '@angular/forms';
 
-import { addValidatorsToControls } from '@validation';
-import { companySyncValidationSuite } from '@validators';
+import { addValidatorsToControls, VALIDATION_CONTEXT } from '@validation';
+import { AppValidationContext, createCompanyAsyncValidationSuite, companySyncValidationSuite } from '@validators';
 import { Company } from '@model';
 import { formContainerViewProvider } from '@core';
 import { REACTIVE_FORMS } from '@imports';
@@ -40,8 +40,26 @@ export class CompanyGeneralFormComponent implements OnInit {
     legalName: '',
     fein: '',
   });
-  constructor(private fb: FormBuilder, private parent: NgForm) {
-    addValidatorsToControls(this.generalForm.controls, companySyncValidationSuite);
+
+  constructor(
+    @Optional() @Inject(VALIDATION_CONTEXT) validationContext: AppValidationContext,
+    private fb: FormBuilder,
+    private parent: NgForm
+  ) {
+    addValidatorsToControls(
+      this.generalForm.controls,
+      companySyncValidationSuite,
+      createCompanyAsyncValidationSuite,
+      () => this.generalForm.value,
+      validationContext,
+    );
+
+    // because change to fein can invalidate legalName ...
+    this.generalForm.controls.fein.valueChanges.subscribe(_ =>
+      // wait a tick before updating legalName
+      setTimeout(() => this.generalForm.controls.legalName.updateValueAndValidity())
+    );
+
   }
 
   ngOnInit(): void {

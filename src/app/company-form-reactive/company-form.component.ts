@@ -5,7 +5,7 @@ import { AddressSubFormComponent } from './address-sub-form-reactive/address-sub
 import { CompanyGeneralFormComponent } from './company-general-sub-form.component';
 
 import { Address, Company } from '@model';
-import { companySyncValidationSuite } from '@validators';
+import { CompanyFormValidationDemo } from '@app/company-form/company-form-validation-demo';
 import { FORMS } from '@imports';
 
 @Component({
@@ -15,6 +15,8 @@ import { FORMS } from '@imports';
   imports: [AddressSubFormComponent, CompanyGeneralFormComponent, FORMS]
 })
 export class CompanyFormComponent {
+
+  constructor(private demoService: CompanyFormValidationDemo) { }
 
   company: Company = {
     id: '',
@@ -28,22 +30,10 @@ export class CompanyFormComponent {
     } as Address
   };
 
-  /** DEMO: validate the company form VM and display aspects of it in the browser console */
+  /** DEMO: validate the company form and display aspects of it in the browser console */
   showValidationState(ngForm: NgForm): void {
     // Reveal validation state at this form level and all the way down.
     ngForm?.form.markAllAsTouched();
-
-    console.groupCollapsed('Company Form Control State');
-    console.log('ngForm.controls', ngForm.controls);
-
-    companySyncValidationSuite.reset();
-    // Pass raw control values directly to the validation suite
-    const syncResult = companySyncValidationSuite(ngForm.value);
-    const syncErrors = syncResult.getErrors();
-    console.log('company form vest synchronous validation state', syncResult);
-    console.log('vest synchronous validation errors', syncErrors);
-    console.groupEnd();
-    const errorCount = Object.keys(syncErrors).length;
-    alert(`Has ${errorCount ? errorCount : 'no'} errors. Look at browser console.`);
+    this.demoService.demoReactive(ngForm);
   }
 }

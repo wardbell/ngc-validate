@@ -5,8 +5,11 @@ import { Suite } from 'vest';
 export const ASYNC_VALIDATION_SUITE_FACTORIES = new InjectionToken('Async Validation Suite Factories');
 export const SYNC_VALIDATION_SUITES = new InjectionToken('Synchronous Validation Suites');
 
+/** Creates AsyncValidationSuite */
+export type AsyncValidationSuiteFactory = () => ValidationSuite;
+
 /** Map of asynchronous vest validation suite factories (creators), keyed by model type. */
-export interface AsyncValidationSuiteFactories extends Indexable<() => ValidationSuite> {
+export interface AsyncValidationSuiteFactories extends Indexable<AsyncValidationSuiteFactory> {
 }
 
 /** Map of synchronous vest validation suites, keyed by model type. */

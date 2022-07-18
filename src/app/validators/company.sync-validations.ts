@@ -9,7 +9,8 @@ import { ValidationContext, ValidationSuite, ValidationSuiteFn } from '@validati
 export const companySyncValidationSuite: ValidationSuite =
   create('CompanySyncValidationSuite',
     (model: Partial<Company>, field?: string, groupName?: string, context?: ValidationContext) => {
-    only(field);
+    only(field); // if field defined, limit to tests of this field
+    only.group(groupName); // if groupName defined, limit to tests of this group
     group('company', () => companySyncValidations(model, field, groupName, context));
     group('workAddress', () => addressSyncValidations(model.workAddress!, field, groupName, context));
   });

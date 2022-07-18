@@ -6,7 +6,7 @@ import { ValidationContext, ValidationSuite, ValidationSuiteFn } from '@validati
 export const addressSyncValidationSuite: ValidationSuite =
   create('AddressSyncValidationSuite',
     (model: Partial<Address>, field?: string, groupName?: string, context?: ValidationContext) => {
-    only(field);
+    only(field); // if field defined, limit to tests of this field
     addressSyncValidations(model, field, groupName, context);
   });
 

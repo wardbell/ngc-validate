@@ -78,10 +78,10 @@ export class CompanyFormComponent implements OnInit {
     }
   }
 
+  /** DEMO: validate the company form and display aspects of it in the browser console */
   showValidationState(ngForm: NgForm): void {
-    // DEMO TIME! Reveal validation state at this form level and all the way down.
+      // Reveal validation state at this form level and all the way down.
     ngForm?.form.markAllAsTouched();
-    console.log('ngForm.controls', ngForm.controls);
-    this.demoService.demo(this.vm!);
+    this.demoService.demoTD(ngForm.controls, this.vm!);
   }
 }

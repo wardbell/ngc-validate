@@ -8,7 +8,8 @@ import { ValidationContext, ValidationSuite, ValidationSuiteFn } from '@validati
 export function createCompanyAsyncValidationSuite() {
   return create('CompanyAsyncValidationSuite',
     (model: Partial<Company>, field?: string, groupName?: string, context?: ValidationContext) => {
-    only(field);
+    only(field); // if field defined, limit to tests of this field
+    only.group(groupName); // if groupName defined, limit to tests of this group
     group('company', () => companyAsyncValidations(model, field, groupName, context));
   }) as ValidationSuite;
 }
