@@ -1,4 +1,4 @@
-import { create, enforce, group, only, test } from 'vest';
+import { create, enforce, group, omitWhen, only, test } from 'vest';
 
 import { addressSyncValidations } from './address.sync-validations';
 import { Company } from '@model';
@@ -17,16 +17,20 @@ export const companySyncValidationSuite: ValidationSuite =
 
 /** Company Synchronous Validations, written in vest. */
 export const companySyncValidations: ValidationSuiteFn = (model: Partial<Company>) => {
+  model = model ?? {};
+  
   test('legalName', 'Legal Name is required', () => {
     enforce(model.legalName).isNotBlank();
   });
 
-  test('legalName', 'Legal Name must be at least 3 characters long', () => {
-    enforce(model.legalName).longerThanOrEquals(3);
-  });
+  omitWhen(!model.legalName, () => {
+    test('legalName', 'Legal Name must be at least 3 characters long', () => {
+      enforce(model.legalName).longerThanOrEquals(3);
+    });
 
-  test('legalName', 'Legal Name may be at most 30 characters long', () => {
-    enforce(model.legalName).shorterThanOrEquals(30);
+    test('legalName', 'Legal Name may be at most 30 characters long', () => {
+      enforce(model.legalName).shorterThanOrEquals(30);
+    });
   });
 
   test('fein', 'Tax Number is required', () => {

@@ -19,6 +19,8 @@ export const companyAsyncValidationSuite: ValidationSuite = createCompanyAsyncVa
 /** Company Asynchronous Validation Suite */
 export const companyAsyncValidations: ValidationSuiteFn =
   (model: Partial<Company>, field?: string, groupName?: string, context?: ValidationContext) => {
+    model = model ?? {};
+
     const fvs = (<AppValidationContext>context)?.feinValidationService;
     /** FEIN check function (or FN returning "not found" result) */
     const checkFein = fvs

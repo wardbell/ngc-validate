@@ -1,4 +1,4 @@
-import { create, enforce, only, test } from 'vest';
+import { create, enforce, omitWhen, only, test } from 'vest';
 
 import { Address, UsStates } from '@model';
 import { ValidationContext, ValidationSuite, ValidationSuiteFn } from '@validation';
@@ -11,16 +11,20 @@ export const addressSyncValidationSuite: ValidationSuite =
   });
 
 export const addressSyncValidations: ValidationSuiteFn = (model: Partial<Address>) => {
+  model = model ?? {};
+
   test('street', 'Street is required', () => {
     enforce(model.street).isNotBlank();
   });
 
-  test('street', 'Street must be at least 3 characters long', () => {
-    enforce(model.street).longerThanOrEquals(3);
-  });
+  omitWhen(!model.street, () => {
+    test('street', 'Street must be at least 3 characters long', () => {
+      enforce(model.street).longerThanOrEquals(3);
+    });
 
-  test('street', 'Street may be at most 50 characters long', () => {
-    enforce(model.street).shorterThanOrEquals(50);
+    test('street', 'Street may be at most 50 characters long', () => {
+      enforce(model.street).shorterThanOrEquals(50);
+    });
   });
 
   test('city', 'City is required', () => {
@@ -40,7 +44,9 @@ export const addressSyncValidations: ValidationSuiteFn = (model: Partial<Address
     enforce(model.postalCode).isNotBlank();
   });
 
-  test('postalCode', 'Postal Code must be 5 digit zip (12345) or a zip+4 (12345-1234)', () => {
-    enforce(model.postalCode).isPostalCode('US');
+  omitWhen(!model.postalCode, () => {
+    test('postalCode', 'Postal Code must be 5 digit zip (12345) or a zip+4 (12345-1234)', () => {
+      enforce(model.postalCode).isPostalCode('US');
+    });
   });
 }
