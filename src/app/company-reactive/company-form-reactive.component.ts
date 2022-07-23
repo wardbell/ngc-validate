@@ -1,22 +1,22 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 
-import { AddressSubFormComponent } from './address-sub-form-reactive/address-sub-form.component';
-import { CompanyGeneralFormComponent } from './company-general-sub-form.component';
+import { AddressReactiveFormComponent } from './address-form-reactive.component';
+import { CompanyGeneralReactiveFormComponent } from './company-general-form-reactive.component';
 
 import { Address, Company } from '@model';
-import { CompanyFormValidationDemo } from '@app/company-form/company-form-validation-demo';
+import { CompanyFormValidationDemoService } from '@services/company-form-validation-demo.service';
 import { FORMS } from '@imports';
 
 @Component({
   selector: 'app-company-form',
   standalone: true,
-  templateUrl: './company-form.component.html',
-  imports: [AddressSubFormComponent, CompanyGeneralFormComponent, FORMS]
+  templateUrl: './company-form-reactive.component.html',
+  imports: [AddressReactiveFormComponent, CompanyGeneralReactiveFormComponent, FORMS]
 })
-export class CompanyFormComponent {
+export class CompanyReactiveFormComponent {
 
-  constructor(private demoService: CompanyFormValidationDemo) { }
+  constructor(private demoService: CompanyFormValidationDemoService) { }
 
   company: Company = {
     id: '',

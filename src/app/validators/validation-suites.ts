@@ -4,6 +4,9 @@ import { addressSyncValidationSuite } from './address.sync-validations';
 import { companySyncValidationSuite } from './company.sync-validations';
 import { createCompanyAsyncValidationSuite } from './company.async-validations';
 
+import { extendVest } from './vest-enforce-extension';
+extendVest();
+
 import { Indexable } from '@utils';
 import { ASYNC_VALIDATION_SUITE_FACTORIES, SYNC_VALIDATION_SUITES, ValidationSuite } from '@validation';
 

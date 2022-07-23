@@ -3,47 +3,24 @@ import { NgForm } from '@angular/forms';
 import { filter, take } from 'rxjs/operators';
 
 // // With widgets
-import { AddressSubFormComponent } from './address-sub-form/address-sub-form.component';
-import { CompanyGeneralFormComponent } from './company-general-sub-form.component';
+import { AddressFormComponent } from './address-form.component';
+import { CompanyGeneralFormComponent } from './company-general-form.component';
 
 // No widgets
-// import { AddressSubFormComponent } from './address-sub-form-no-widget/address-sub-form.component';
-// import { CompanyGeneralFormComponent } from './company-general-sub-form-no-widget.component';
+// import { AddressFormComponent } from './address-form-no-widget/address-form.component';
+// import { CompanyGeneralFormComponent } from './company-general-form-no-widget.component';
 
 import { areDifferent, deepClone } from '@utils';
 import { Company } from '@model';
-import { CompanyFormValidationDemo } from './company-form-validation-demo';
+import { CompanyFormValidationDemoService } from '@services/company-form-validation-demo.service';
 import { DataService } from '@services';
 import { FORMS } from '@imports';
 
 @Component({
   selector: 'app-company-form',
   standalone: true,
-  imports: [AddressSubFormComponent, CompanyGeneralFormComponent, FORMS],
-
-  template: `
-    <form *ngIf="vm" #form="ngForm" [model]="vm" modelType="company">
-      <mat-card>
-
-        <mat-card-header>
-          <mat-card-title>Company</mat-card-title>
-        </mat-card-header>
-
-        <mat-card-content>
-          <app-company-general-sub-form [vm]="vm"></app-company-general-sub-form>
-
-          <h2>Work Address</h2>
-
-          <app-address-sub-form [vm]="vm?.workAddress" name="workAddress"></app-address-sub-form>
-        </mat-card-content>
-
-        <mat-card-actions>
-          <button mat-raised-button color="primary" type="button" (click)="showValidationState(form)">Show Validation State</button>
-        </mat-card-actions>
-
-      </mat-card>
-    </form>
-  `,
+  templateUrl: './company-form.component.html',
+  imports: [AddressFormComponent, CompanyGeneralFormComponent, FORMS],
 })
 export class CompanyFormComponent implements OnInit {
   /** The NgForm, exposed for testing only. */
@@ -51,7 +28,7 @@ export class CompanyFormComponent implements OnInit {
 
   constructor(
     private dataService: DataService,
-    private demoService: CompanyFormValidationDemo,
+    private demoService: CompanyFormValidationDemoService,
   ) { }
 
   vm?: Partial<Company>;
@@ -80,7 +57,7 @@ export class CompanyFormComponent implements OnInit {
 
   /** DEMO: validate the company form and display aspects of it in the browser console */
   showValidationState(ngForm: NgForm): void {
-      // Reveal validation state at this form level and all the way down.
+    // Reveal validation state at this form level and all the way down.
     ngForm?.form.markAllAsTouched();
     this.demoService.demoTD(ngForm.controls, this.vm!);
   }

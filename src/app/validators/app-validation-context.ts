@@ -19,14 +19,4 @@ export const appValidationContextProvider: Provider = { provide: VALIDATION_CONT
 }};
 
 
-// #region Extend vest.enforce with external validation rules from the validator.js library
-// https://vestjs.dev/docs/enforce/consuming_external_rules
-// Must be part of a file that will be included in all compilations
-// This file is as good as any.
-import { enforce } from 'vest';
-import isEmail from 'validator/es/lib/isEmail';
-import isPostalCode from 'validator/es/lib/isPostalCode';
-
-enforce.extend({ isEmail, isPostalCode });
-// #endregion Extend vest.enforce with external validation rules from the validator.js library
 

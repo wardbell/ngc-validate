@@ -1,7 +1,7 @@
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
-import { CompanyGeneralFormComponent } from './company-general-sub-form.component';
+import { CompanyGeneralFormComponent } from './company-general-form.component';
 import { validationSuiteProviders } from '@validators';
 
 describe('CompanyGeneralFormComponent', () => {

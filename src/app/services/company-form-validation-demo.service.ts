@@ -8,7 +8,7 @@ import { Indexable } from '@utils';
 import { VALIDATION_CONTEXT } from '@validation/validation-context';
 
 @Injectable({ providedIn: 'root' })
-export class CompanyFormValidationDemo {
+export class CompanyFormValidationDemoService {
 
   constructor(@Inject(VALIDATION_CONTEXT) private appValidationContext: AppValidationContext) {
   }
@@ -18,7 +18,7 @@ export class CompanyFormValidationDemo {
     console.log('ngForm.controls', ngForm.controls);
     const data = ngForm.value;
     console.log('Company form data value', data);
-    const companyVm: Partial<Company> = {...data.general, ...data.workAddress}
+    const companyVm: Partial<Company> = { ...data.general, ...data.workAddress }
     this.demoVest(companyVm);
   }
 

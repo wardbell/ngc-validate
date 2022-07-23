@@ -1,48 +1,50 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 
-import { UsStates } from '@model';
+import { Address, UsStates } from '@model';
+import { addressSyncValidationSuite } from '@validators';
+import { addValidatorsToControls } from '@validation';
 
 @Component({
   selector: 'app-address-form',
   standalone: true,
-  templateUrl: './address-form.component.html',
+  templateUrl: './solo-address-form.component.html',
   imports: [
     CommonModule,
     MatButtonModule, MatCardModule, MatInputModule, MatRadioModule, MatSelectModule,
     ReactiveFormsModule
   ],
 })
-export class AddressFormComponent {
+export class SoloAddressFormComponent {
   addressForm = this.fb.group({
-    address: [null, Validators.required],
-    address2: null,
-    city: [null, Validators.required],
-    state: [null, Validators.required],
-    postalCode: [null, Validators.compose([
-      Validators.required, Validators.minLength(5), Validators.maxLength(5)])
-    ],
+    street: null,
+    street2: null,
+    city: null,
+    state: null,
+    postalCode: null,
   });
 
-  hasAddress2 = false;
+  hasStreet2 = false;
 
   states = UsStates;
 
   constructor(private fb: FormBuilder) {
+    addValidatorsToControls(this.addressForm.controls, addressSyncValidationSuite);
   }
 
   /** DEMO: validate the address reactive form and display aspects of it in the browser console */
   showValidationState(): void {
     console.groupCollapsed('Address Reactive Form Validation State');
-    this.addressForm.markAllAsTouched();
-    console.log('ngForm.controls', this.addressForm.controls);
-    const errors = this.addressForm.errors ?? {};
+    addressSyncValidationSuite.reset();
+    const r = addressSyncValidationSuite(this.addressForm.value as unknown as Address);
+    console.log('address form validation state', r);
+    const errors = r.getErrors();
     console.log('errors', errors);
     console.groupEnd();
     const errorCount = Object.keys(errors).length;

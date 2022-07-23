@@ -6,13 +6,13 @@ import { FORMS } from '@imports';
 import { UsStates } from '@model';
 
 @Component({
-  selector: 'app-address-sub-form',
+  selector: 'app-address-form',
   standalone: true,
-  templateUrl: './address-sub-form.component.html',
+  templateUrl: './address-form-no-widget.component.html',
   viewProviders: [formContainerViewProvider],
   imports: [FORMS],
 })
-export class AddressSubFormComponent {
+export class AddressFormComponent {
   @Input() vm?: Address
 
   /** Name for the formGroup when added to the parent form. Defaults to 'address'. */

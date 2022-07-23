@@ -6,21 +6,13 @@ import { FORMS } from '@imports';
 import { InputTextComponent } from '@app/widgets';
 
 @Component({
-  selector: 'app-company-general-sub-form',
+  selector: 'app-company-general-form',
   standalone: true,
   imports: [FORMS],
+  templateUrl: './company-general-form.component.html',
   viewProviders: [formContainerViewProvider],
-
-  template: `
-    <div class="row">
-      <input-text name="legalName" placeholder="Legal Name" #legalName></input-text>
-    </div>
-    <div class="row">
-      <input-text name="fein" placeholder="Federal Tax Number" class="col short-width" (changed)="feinChanged($event)"></input-text>
-    </div>
-  `,
 })
-export class CompanyGeneralFormComponent{
+export class CompanyGeneralFormComponent {
   @Input() vm?: Partial<Company>;
   @ViewChild('legalName') legalNameComponent!: InputTextComponent;
 

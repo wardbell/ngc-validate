@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { AddressFormComponent } from '@app/test-address-forms/address-form-reactive-w-val/address-form.component';
-import { CompanyFormComponent } from "@app/company-form/company-form.component";
-import { CompanyFormComponent as CompanyFormReactiveComponent } from "@app/company-form-reactive/company-form.component";
+import { SoloAddressFormComponent } from '@app/teaching-forms/solo-address-form-reactive-w-val/solo-address-form.component';
+import { CompanyFormComponent } from "@app/company/company-form.component";
+import { CompanyReactiveFormComponent } from "@app/company-reactive/company-form-reactive.component";
 import { PageLeaveGuard } from '@services';
 import { SettingsComponent } from '@app/settings-component/settings.component';
 
@@ -16,7 +16,7 @@ export const appRoutes: Routes = [
   {
     path: 'about',
     loadComponent: () =>
-      import('./about/about.component').then(m => m.AboutComponent),
+      import('@app/teaching-forms/about/about.component').then(m => m.AboutComponent),
     title: 'About'
   },
   {
@@ -27,7 +27,7 @@ export const appRoutes: Routes = [
   },
   {
     path: 'company-reactive',
-    component: CompanyFormReactiveComponent,
+    component: CompanyReactiveFormComponent,
     title: 'Company (Reactive)'
   },
   {
@@ -36,8 +36,8 @@ export const appRoutes: Routes = [
     title: 'Settings'
   },
   {
-    path: 'test-address',
-    component: AddressFormComponent,
-    title: 'Test Address'
+    path: 'solo-address',
+    component: SoloAddressFormComponent,
+    title: 'Solo Address'
   },
 ];

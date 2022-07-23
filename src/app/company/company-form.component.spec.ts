@@ -6,7 +6,7 @@ import { BehaviorSubject, of } from 'rxjs';
 
 import { Address, Company } from '@model';
 import { appValidationContextProvider } from '@validators';
-import { CompanyFormValidationDemo } from './company-form-validation-demo';
+import { CompanyFormValidationDemoService } from '../services/company-form-validation-demo.service';
 import { CompanyFormComponent } from './company-form.component';
 import { DataService } from '@services';
 import { validationSuiteProviders } from '@validators';
@@ -22,7 +22,7 @@ describe('CompanyFormComponent', () => {
       ],
       providers: [
         appValidationContextProvider,
-        CompanyFormValidationDemo,
+        CompanyFormValidationDemoService,
         { provide: DataService, useClass: TestDataService },
         validationSuiteProviders,
       ]

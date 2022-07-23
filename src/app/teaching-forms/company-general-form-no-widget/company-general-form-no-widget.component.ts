@@ -5,17 +5,12 @@ import { formContainerViewProvider } from '@core';
 import { FORMS } from '@imports';
 
 @Component({
-  selector: 'app-company-general-sub-form',
+  selector: 'app-company-general-form',
   standalone: true,
   imports: [FORMS],
+  templateUrl: './company-general-form-no-widget.component.html',
   viewProviders: [formContainerViewProvider],
-
-  template: `
-    <div class="row">
-      <input-text name="legalName" placeholder="Legal Name"></input-text>
-    </div>
-  `,
 })
-export class CompanyGeneralFormComponent{
+export class CompanyGeneralFormComponent {
   @Input() vm?: Partial<Company>;
 }

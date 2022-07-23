@@ -16,12 +16,12 @@ interface Vm {
 }
 
 @Component({
-  selector: 'app-address-sub-form',
+  selector: 'app-address-form',
   standalone: true,
-  templateUrl: './address-sub-form.component.html',
+  templateUrl: './address-form-reactive.component.html',
   imports: [REACTIVE_FORMS],
 })
-export class AddressSubFormComponent implements OnInit {
+export class AddressReactiveFormComponent implements OnInit {
   /** Name for the formGroup when added to the parent form. Defaults to 'address'. */
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('name') formGroupName = 'address';

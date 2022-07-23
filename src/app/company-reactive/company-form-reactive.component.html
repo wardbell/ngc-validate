@@ -6,11 +6,11 @@
     </mat-card-header>
 
     <mat-card-content>
-      <app-company-general-sub-form [company]="company"></app-company-general-sub-form>
+      <app-company-general-form [company]="company"></app-company-general-form>
 
       <h2>Work Address</h2>
 
-      <app-address-sub-form [address]="company.workAddress" name="workAddress"></app-address-sub-form>
+      <app-address-form [address]="company.workAddress" name="workAddress"></app-address-form>
     </mat-card-content>
 
     <mat-card-actions>

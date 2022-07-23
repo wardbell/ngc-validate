@@ -23,7 +23,7 @@ import { ControlContainer, NgForm, NgModelGroup } from '@angular/forms';
  * - Controls still validate, update model, and update their statuses
  * - If within NgForm, no compiler error because ControlContainer is optional for ngModel
  *
- * Note: if the SubForm Component that uses this Provider
+ * Note: if the Form Component that uses this Provider
  * is not within a Form or NgModelGroup, the provider returns `null`
  * resulting in an error, something like
  * ```

@@ -8,32 +8,13 @@ import { formContainerViewProvider } from '@core';
 import { REACTIVE_FORMS } from '@imports';
 
 @Component({
-  selector: 'app-company-general-sub-form',
+  selector: 'app-company-general-form',
   standalone: true,
-  template: `
-  <div [formGroup]="generalForm">
-    <div class="row">
-      <mat-form-field class="col full-width">
-        <input matInput placeholder="Legal Name" formControlName="legalName" required>
-        <mat-error *ngIf="generalForm.controls.legalName.errors">
-          {{ generalForm.controls.legalName.errors['error'] }}
-        </mat-error>
-      </mat-form-field>
-    </div>
-    <div class="row">
-      <mat-form-field class="col mid-width">
-        <input matInput placeholder="fein" formControlName="fein" required>
-        <mat-error *ngIf="generalForm.controls.fein.errors">
-          {{ generalForm.controls.fein.errors['error'] }}
-        </mat-error>
-      </mat-form-field>
-    </div>
-  </div>
-  `,
+  templateUrl: './company-general-form-reactive.component.html',
   viewProviders: [formContainerViewProvider],
   imports: [REACTIVE_FORMS]
 })
-export class CompanyGeneralFormComponent implements OnInit {
+export class CompanyGeneralReactiveFormComponent implements OnInit {
   @Input() company?: Company;
 
   protected generalForm = this.fb.group({
