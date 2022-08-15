@@ -24,7 +24,7 @@
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "validator": "^13.7.0",
-    "vest": "^4.4.1",
+    "vest": "^4.6.4",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
