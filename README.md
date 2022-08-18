@@ -68,7 +68,7 @@ You can copy and re-purpose these files into your own application, following the
 
 A full description of the integration is TBD. Here is a brief summary.
 
-Two special Angular validator functions in `validation/validation-fns.ts` - one synchronous and one synchronous - send the form control changes to model-specific vest validation suites. 
+Two special Angular validator functions in `validation/validation-fns.ts` - one synchronous and one asynchronous - send the form control changes to model-specific vest validation suites. 
 
 These are the _only validator functions_ a form control ever needs!
 
