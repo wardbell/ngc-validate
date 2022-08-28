@@ -2,6 +2,7 @@ import { Provider } from '@angular/core';
 
 import { addressSyncValidationSuite } from './address.sync-validations';
 import { companySyncValidationSuite } from './company.sync-validations';
+import { employeeSyncValidationSuite } from './employee.sync-validations';
 import { createCompanyAsyncValidationSuite } from './company.async-validations';
 
 import { extendVest } from './vest-enforce-extension';
@@ -14,6 +15,7 @@ import { ASYNC_VALIDATION_SUITE_FACTORIES, SYNC_VALIDATION_SUITES, ValidationSui
 export const syncValidationSuites: Indexable<ValidationSuite> = {
   address: addressSyncValidationSuite,
   company: companySyncValidationSuite,
+  employee: employeeSyncValidationSuite,
 };
 
 /** Creators of Asynchronous Vest Validation Suites for this app, keyed by model type.

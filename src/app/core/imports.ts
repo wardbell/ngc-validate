@@ -16,6 +16,12 @@ import { FormValidationScopeDirective } from '@app/validation/form-validation-sc
 export const COMMON = [CommonModule];
 
 /** Standard imports for (almost) every Template-Driven forms component in this app. */
+export const LIST = [
+  CommonModule,
+  MatButtonModule, MatCardModule, MatInputModule, MatRadioModule, MatSelectModule,
+];
+
+/** Standard imports for (almost) every Template-Driven forms component in this app. */
 export const FORMS = [
   CommonModule,
   FormFieldNgModelDirective, FormValidationScopeDirective,

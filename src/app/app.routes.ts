@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { SoloAddressFormComponent } from '@app/teaching-forms/solo-address-form-reactive-w-val/solo-address-form.component';
 import { CompanyFormComponent } from "@app/company/company-form.component";
 import { CompanyReactiveFormComponent } from "@app/company-reactive/company-form-reactive.component";
+import { EmployeeFormComponent } from '@app/employee/employee-form.component';
+import { EmployeeListComponent } from '@app/employee/employee-list.component';
 import { PageLeaveGuard } from '@services';
 import { SettingsComponent } from '@app/settings-component/settings.component';
 
@@ -29,6 +31,17 @@ export const appRoutes: Routes = [
     path: 'company-reactive',
     component: CompanyReactiveFormComponent,
     title: 'Company (Reactive)'
+  },
+  {
+    path: 'employees',
+    component: EmployeeListComponent,
+    title: 'Employees'
+  },
+  {
+    path: 'employees/:id',
+    component: EmployeeFormComponent,
+    title: 'Employee Form',
+    canDeactivate: [PageLeaveGuard],
   },
   {
     path: 'settings',

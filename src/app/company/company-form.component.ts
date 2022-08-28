@@ -3,7 +3,7 @@ import { NgForm } from '@angular/forms';
 import { filter, take } from 'rxjs/operators';
 
 // // With widgets
-import { AddressFormComponent } from './address-form.component';
+import { AddressFormComponent } from '@app/address/address-form.component';
 import { CompanyGeneralFormComponent } from './company-general-form.component';
 
 // No widgets

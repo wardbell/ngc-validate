@@ -43,7 +43,7 @@ import { SelectOption } from './interfaces';
 export class InputSelectComponent extends InputBaseComponent  {
   @Input() options: SelectOption[] = [];
 
-  /** Display this text as the (disabled) first option when the model.field is "empty". */
+  /** Display this text as the (disabled) first option when the model.field is "empty" or not among the choices. */
   @Input() placeholderOption = '';
 
   constructor(
@@ -54,6 +54,6 @@ export class InputSelectComponent extends InputBaseComponent  {
   }
 
   get showPlaceholderOption() {
-    return this.placeholderOption && (this.value === '' || this.value == null);
+    return this.placeholderOption && (this.value === '' || this.value == null || this.options.every(opt => opt.value !== this.value));
   }
 }
