@@ -1,14 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { NgForm } from '@angular/forms';
-import { take } from 'rxjs/operators';
+import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 import { AddressFormComponent } from '@app/address/address-form.component';
-import { areDifferent, deepClone } from '@utils';
-import { Employee, EmployeeType} from '@model';
-import { DataService } from '@services';
+import { EmployeeViewService, employeeTypes } from './employee-view.service';
 import { FORMS } from '@imports';
-import { SelectOption } from '@app/widgets/interfaces';
 
 @Component({
   selector: 'app-employee-form',
@@ -19,7 +14,7 @@ import { SelectOption } from '@app/widgets/interfaces';
     <span style="vertical-align: top">Employees</span>
   </a>
 
-  <form *ngIf="vm" #form="ngForm" [model]="vm" modelType="employee">
+  <form *ngIf="vm$ | async as vm" #form="ngForm" [model]="vm" modelType="employee">
     <mat-card>
 
       <mat-card-header>
@@ -40,48 +35,14 @@ import { SelectOption } from '@app/widgets/interfaces';
   `,
   imports: [AddressFormComponent,  FORMS, RouterModule],
 })
-export class EmployeeFormComponent implements OnInit {
-  /** The NgForm, exposed for testing only. */
-  @ViewChild('form') form!: NgForm;
+export class EmployeeFormComponent {
+  constructor(private viewService: EmployeeViewService) { }
 
-  employeeTypes: SelectOption[] = [
-    { name: 'Full Time', value: EmployeeType.FullTime },
-    { name: 'Part Time', value: EmployeeType.PartTime },
-    { name: '1099 Contractor', value: EmployeeType.Contractor }
-  ];
-  vm!: Employee;
+  employeeTypes = employeeTypes;
+  vm$ = this.viewService.getEmployeeVm();
 
-  constructor(
-    private dataService: DataService,
-    private route: ActivatedRoute,
-    private router: Router,
-    ) { }
-
-  ngOnInit(): void {
-    const eeId = this.route.snapshot.params['id'];
-    const { employees } = this.dataService.cacheNow();
-    const ee = employees.find(e => e.id == eeId);
-    if (ee) {
-      this.vm = deepClone(ee);
-    } else {
-      this.router.navigateByUrl('/employees');
-    }
-  }
-
+  /** Save Employee changes, if there are any, when user navigates away. */
   canLeave() {
-    return !this.vm || this.save();
-  }
-
-  /** Save Employee changes if there are any. */
-  private save() {
-    const eeId = this.vm!.id;
-    const { employees: oldEmployees } = this.dataService.cacheNow();
-    const oldEe = oldEmployees.find(e => e.id === eeId);
-    if (areDifferent(oldEe, this.vm)) {
-      const employees = oldEmployees.map(e => e.id === eeId ? {...this.vm} : e );
-      return this.dataService.saveCompanyData({ employees });
-    } else {
-      return true; // no change
-    }
+    return this.viewService.saveEmployeeVm(this.vm$);
   }
 }

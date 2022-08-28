@@ -1,4 +1,4 @@
-<form *ngIf="vm" #form="ngForm" [model]="vm" modelType="company">
+<form *ngIf="vm$ | async as vm" #form="ngForm" [model]="vm" modelType="company">
   <mat-card>
 
     <mat-card-header>

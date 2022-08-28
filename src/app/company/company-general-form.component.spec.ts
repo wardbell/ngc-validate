@@ -10,12 +10,8 @@ describe('CompanyGeneralFormComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        NoopAnimationsModule,
-      ],
-      providers: [
-        validationSuiteProviders,
-      ]
+      imports: [ NoopAnimationsModule ],
+      providers: [ validationSuiteProviders ]
     }).compileComponents();
   }));
 

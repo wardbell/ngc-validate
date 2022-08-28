@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { DataService } from '@services';
+import { EmployeeViewService } from './employee-view.service';
 import { LIST } from '@imports';
 
 @Component({
@@ -32,7 +32,7 @@ import { LIST } from '@imports';
   imports: [LIST, RouterModule],
 })
 export class EmployeeListComponent {
-  constructor( private dataService: DataService) { }
+  constructor( private viewService: EmployeeViewService) { }
 
-  employees$ = this.dataService.employees$;
+  employees$ = this.viewService.employees$;
 }
