@@ -13,9 +13,7 @@ import {
 } from '@validation';
 
 export function createCompanyAsyncValidationSuite() {
-  return create(
-    'CompanyAsyncValidationSuite',
-    (
+  return create('CompanyAsyncValidationSuite', (
       model: Partial<Company>,
       field?: string,
       groupName?: string,
@@ -35,9 +33,13 @@ export const companyAsyncValidationSuite: ValidationSuite =
 
 /** Company Asynchronous Validation Suite */
 export const companyAsyncValidations: ValidationSuiteFn = (
+  /** The object with data to validate */
   model: Partial<Company>,
+  /** The property of that data to validate, if we only want to validate one property */
   field?: string,
+  /** The group of properties in that data to validate, if we only want to validate one group */
   groupName?: string,
+  /** Extra resources that a validator might need */
   context?: ValidationContext
 ) => {
   model = model ?? {};
@@ -52,6 +54,12 @@ export const companyAsyncValidations: ValidationSuiteFn = (
   omitWhen(!isGoodFein(model.fein), () => {
     // these validations will be completely omitted if the FEIN is not valid
 
+    test('fein', 'Tax Number is not registered with the IRS', async () => {
+      const response = await checkFein(model.fein!);
+      // console.log('fein checkFein response', response);
+      enforce(response.feinName).isNotNullish();
+    });
+
     test('legalName', 'Legal Name must match Federal Tax Name', async () => {
       if (model.legalName) {
         const response = await checkFein(model.fein!);
@@ -60,19 +68,10 @@ export const companyAsyncValidations: ValidationSuiteFn = (
 
         enforce(name)
           .message(
-            `Does not match "${name}", the name registered with the IRS for this tax number`
+            `Does not match the name, "${name}", registered with the IRS for this tax number`
           )
-          .isNotBlank()
-          .notEquals('*')
-          .notEquals(model.legalName.toUpperCase());
+          .condition(name => !name || name === '*' ||  name === model.legalName!.toUpperCase());
       }
-      // All other cases are either OK or the test does not apply
-    });
-
-    test('fein', 'Tax Number is not registered with the IRS', async () => {
-      const response = await checkFein(model.fein!);
-      // console.log('fein checkFein response', response);
-      enforce(response.feinName).isNotNullish();
     });
   });
 };

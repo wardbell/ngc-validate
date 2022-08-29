@@ -9,21 +9,22 @@ import { ValidationContext, ValidationSuite } from './interfaces';
  * `errors` - all of the vest validation errors for that field.
  * @param suite the vest suite with validation rules
  * @param field to validate
- * @param [model] the model data to validate or a function returning such a model
+ * @param [model] the view model data to validate or a function returning such a model
  * Merges the control.value as the field property of that model.
  * @param [group] the name of a group of tests; only process tests in this group.
  * @param [context] global contextual data passed to vest validation rules.
  */
 export function vestSyncFieldValidator(
-  suite: ValidationSuite,
-  field: string,
-  model?: Indexable | (() => Indexable),
-  group?: string,
-  context?: ValidationContext,
+  suite: ValidationSuite,                // the validations
+  field: string,                         // the property to validate
+  model?: Indexable | (() => Indexable), // the view model with the data to validate
+  group?: string,                        // the group of properties to validate (if specified)
+  context?: ValidationContext,           // extra stuff validators could use
 ): ValidatorFn | ValidatorFn[] {
   const vestValidator = (control: AbstractControl): ValidationErrors | null => {
-    // Note: must merge control.value because ngModel will not have updated the viewModel yet.
-    const mod: Indexable = { ...(typeof model == 'function' ? model() : model), [field]: control.value };
+    let mod: Indexable = typeof model == 'function' ? model() : model;
+    // Merge `control.value` because ngModel will not have updated the viewModel yet.
+    mod = { ...mod, [field]: control.value };
     const result = suite(mod, field, group, context).getErrors();
     const errors = result[field];
     return errors ? { error: errors[0], errors } : null;
@@ -43,7 +44,7 @@ export function vestSyncFieldValidator(
  * `errors` - all of the vest validation errors for that field.
  * @param suite that creates the vest suite with async validation rules.
  * @param field to validate
- * @param [model] the model data to validate or a function returning such a model
+ * @param [model] the view model data to validate or a function returning such a model
  * Merges the control.value as the field property of that model.
  * @param [group] the name of a group of tests; only process tests in this group.
  * @param [context] global contextual data passed to vest validation rules.
@@ -67,8 +68,9 @@ export function vestAsyncFieldValidator(
   const vestAsyncValidator = (control: AbstractControl): Promise<ValidationErrors | null> => {
     const promise = new Promise<ValidationErrors | null>((resolve) => {
       // console.log(`async validator for ${field} started`);
-      // Note: must merge control.value because ngModel will not have updated the viewModel yet.
-      const mod: Indexable = { ...(typeof model == 'function' ? model() : model), [field]: control.value };
+      let mod: Indexable = typeof model == 'function' ? model() : model
+      // Merge control.value because ngModel will not have updated the viewModel yet.
+      mod = { ...mod, [field]: control.value };
       suite(mod, field, group, context)
         .done(field, result => {
           // console.log(`async validator for ${field} resolved`);

@@ -6,19 +6,26 @@ import { isGoodFein } from '@services/fein-validation.service';
 import { ValidationContext, ValidationSuite, ValidationSuiteFn } from '@validation';
 
 /** Company Synchronous Validation Suite */
-export const companySyncValidationSuite: ValidationSuite =
-  create('CompanySyncValidationSuite',
-    (model: Partial<Company>, field?: string, groupName?: string, context?: ValidationContext) => {
-    only(field); // if field defined, limit to tests of this field
-    only.group(groupName); // if groupName defined, limit to tests of this group
-    group('company', () => companySyncValidations(model, field, groupName, context));
-    group('workAddress', () => addressSyncValidations(model.workAddress!, field, groupName, context));
-  });
+export const companySyncValidationSuite: ValidationSuite = create('CompanySyncValidationSuite', (
+  /** The object with data to validate */
+  model: Partial<Company>,
+  /** The property of that data to validate, if we only want to validate one property */
+  field?: string,
+  /** The group of properties in that data to validate, if we only want to validate one group */
+  groupName?: string,
+  /** Extra resources that a validator might need */
+  context?: ValidationContext
+) => {
+  only(field); // if field defined, limit to tests of this field
+  only.group(groupName); // if groupName defined, limit to tests of this group
+  group('company', () => companySyncValidations(model, field, groupName, context));
+  group('workAddress', () => addressSyncValidations(model.workAddress!, field, groupName, context));
+});
 
 /** Company Synchronous Validations, written in vest. */
 export const companySyncValidations: ValidationSuiteFn = (model: Partial<Company>) => {
   model = model ?? {};
-  
+
   test('legalName', 'Legal Name is required', () => {
     enforce(model.legalName).isNotBlank();
   });
