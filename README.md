@@ -14,6 +14,10 @@ This project contains
 
 > Coincidentally, the sample app also demonstrates "Standalone Components" and other new features of Angular v14.
 
+### License
+
+MIT. Please steal anything you see that you like!.
+
 ### Form-Driven Validation
 
 In Form-Driven validation, each form component validates user input to _its own controls_ using validation rules embedded in the component's logic. These rules only are only applied when the user is entering data on that form. 
