@@ -16,7 +16,7 @@ This project contains
 
 ### License
 
-MIT. Please steal anything you see that you like!.
+MIT. Please steal anything you see that you like!
 
 ### Form-Driven Validation
 
